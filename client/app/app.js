@@ -1,4 +1,5 @@
 angular.module('canoe', [
+	// 'canoe.uberServices',
 	'canoe.main',
 	'ngRoute'
 ])

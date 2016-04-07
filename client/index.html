@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app='canoe'>
   <head>
     <meta charset='utf-8' />
     <title>Canoe</title>
@@ -8,10 +8,18 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.5/angular-material.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-route.js"></script>
-
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-route.js"></script>
   </head>
+
   <body>
     <h1>Canoe</h1>
+
+    <div ng-view></div>
+
+		<!-- VIEWS -->
+	  <script src="app/mainView/mainView.js"></script>
+
+		<!--app module-->
+	  <script src="app/app.js"></script>
   </body>
 </html>
