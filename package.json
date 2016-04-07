@@ -1,8 +1,8 @@
 {
-  "name": "shortly-angular",
+  "name": "canoe",
   "version": "1.1.0",
-  "description": "MVP MEAN stack app",
-  "author": "Chris",
+  "description": "Greenfield app",
+  "author": "Incidental-Cashew",
   "scripts": {
     "test": "gulp karma",
     "start": "gulp",

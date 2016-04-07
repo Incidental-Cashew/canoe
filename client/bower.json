@@ -1,0 +1,22 @@
+{
+  "name": "canoe",
+  "homepage": "https://github.com/smnaqvi89/canoe",
+  "authors": [
+    "Incidental-Cashew"
+  ],
+  "description": "Greenfield app",
+  "main": "",
+  "moduleType": [
+    "es6",
+    "node"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
