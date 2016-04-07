@@ -1,0 +1,32 @@
+{
+
+  "name": "canoe",
+  "homepage": "https://github.com/smnaqvi89/canoe",
+  "authors": [
+    "Incidental-Cashew"
+  ],
+  "private": "true",
+  "devDependencies": {
+    "ionic": "driftyco/ionic-bower#1.2.4"
+  },
+  "description": "Greenfield app",
+  "main": "",
+  "moduleType": [
+    "es6",
+    "node"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.3.16",
+    "angular-route": "~1.3.16",
+    "angular-mocks": "~1.3.16"
+  }
+}
