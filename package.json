@@ -19,7 +19,8 @@
     "eslint-config-hackreactor": "git://github.com/hackreactor-labs/eslint-config-hackreactor"
   },
   "dependencies": {
+    "body-parser": "^1.4.3",
+    "express": "^4.4.5",
+    "express-partials": "~0.2.0"
   }
 }
-Status API Training Shop Blog About
-© 2016 GitHub, Inc. Terms Privacy Security Contact Help
