@@ -1,4 +1,4 @@
-angular.module('MODULENAME', [])
+angular.module('canoe.uberServices', [])
 
 .factory('Details', function($http) {
 
