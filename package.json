@@ -1,0 +1,25 @@
+{
+  "name": "shortly-angular",
+  "version": "1.1.0",
+  "description": "MVP MEAN stack app",
+  "author": "Chris",
+  "scripts": {
+    "test": "gulp karma",
+    "start": "gulp",
+    "postinstall": "curl -s https://raw.githubusercontent.com/hackreactor-labs/pomander/master/bin/install | bash",
+    "lint": "eslint ./"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/clardizabal/canoe.git"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "devDependencies": {
+    "eslint-config-hackreactor": "git://github.com/hackreactor-labs/eslint-config-hackreactor"
+  },
+  "dependencies": {
+  }
+}
+Status API Training Shop Blog About
+© 2016 GitHub, Inc. Terms Privacy Security Contact Help
