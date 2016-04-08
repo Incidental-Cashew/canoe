@@ -1,6 +1,7 @@
 angular.module('canoe', [
+  'base64',
   'canoe.lyftServices',
-  'canoe.uberServices',
+  // 'canoe.uberServices',
   'canoe.main',
   'ngRoute'
 ])
