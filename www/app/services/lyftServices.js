@@ -2,7 +2,7 @@
 angular.module('canoe.lyftServices', [])
 
 .factory('Auth', function($http) {
-  
+
   var getLyftToken = function() {
     return $http({
       url: 'https://api.lyft.com/oauth/token',
@@ -25,7 +25,21 @@ angular.module('canoe.lyftServices', [])
 })
 
 .factory('Details', function($http) {
+  var getLyftDriversNearBy = function(userData, token) {
+    return $http({
+      url: 'https://api.lyft.com/v1/drivers?api_key=XzxEdIUxTPmwORmVdy4V4jvseD3vvTBy',
+      method: GET,
+      headers: {
+        Authorization: token
+      }
+      data: {
+        lat: 37.773550,
+        lng: -122.421264,
+      }
+    }).then(function(response){
+      return response;
 
+    });
   var getLyftEstimates = function(userData, token) {
     return $http({
       url: 'https://api.lyft.com/v1/cost',
@@ -36,8 +50,8 @@ angular.module('canoe.lyftServices', [])
       data: {
         start_lat: 37.773972,
         start_lng: -122.431297,
-        end_lat: 37.2358, 
-        end_lng: -121.9624 
+        end_lat: 37.2358,
+        end_lng: -121.9624
       }
     }).then(function(res) {
         //RESPONSE
