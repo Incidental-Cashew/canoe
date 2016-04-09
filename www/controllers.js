@@ -2,7 +2,7 @@ angular.module('starter.controllers', [])
 
 .controller('DashCtrl', function($scope) {})
 
-.controller('ChatsCtrl', function($scope, Chats) {
+.controller('ChatsCtrl', function($scope, Chats, $cordovaGeolocation, NgMap) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -10,6 +10,22 @@ angular.module('starter.controllers', [])
   //
   //$scope.$on('$ionicView.enter', function(e) {
   //});
+
+  NgMap.getMap().then(function(map) {
+   console.log(map.getCenter());
+   console.log('markers', map.markers);
+   console.log('shapes', map.shapes);
+ });
+
+ NavigatorGeolocation.getCurrentPosition()
+  .then(function(position) {
+    var lat = position.coords.latitude, lng = position.coords.longitude;
+    //TODO: add this into map by default
+  })
+  var options = {timeout: 10000, enableHighAccuracy: true};
+  $scope.map = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
+
+
 
   $scope.chats = Chats.all();
   $scope.remove = function(chat) {
