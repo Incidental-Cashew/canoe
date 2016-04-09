@@ -2,7 +2,8 @@ angular.module('canoe', [
   'canoe.lyftServices',
   'canoe.uberServices',
   'canoe.main',
-  'ngRoute'
+  'ngRoute',
+  'ngCordova'
 ])
 
 .config(function($routeProvider) {
