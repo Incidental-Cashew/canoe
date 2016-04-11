@@ -4,7 +4,8 @@ angular.module('canoe.main', [])
 
   Auth.getLyftToken().then(function(token) {
     // $scope.token = token.access_token;
-    console.log(Details.getLyftEstimates(null, token.access_token));
+    var estimates = Details.getLyftEstimates(null, token.access_token);
+    console.log(estimates);
     console.log(Details.getLyftEta(null, token.access_token));
     // console.log(Details.getLyftDriversNearBy(null, token.access_token));
   });

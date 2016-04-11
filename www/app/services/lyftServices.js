@@ -28,22 +28,22 @@ angular.module('canoe.lyftServices', [])
 
 })
 
-.factory('Details', function($http) {
+.factory('LyftDetails', function($http) {
   var getLyftDriversNearBy = function(userData, token) {
     return $http({
       url: 'https://api.lyft.com/v1/drivers',
-      method: GET,
+      method: 'GET',
       headers: {
-        Authorization: 'bearer' + token
+        authorization: 'bearer ' + token
       },
-      data: {
-        lat: 37.773972,
-        lng: -122.431297,
+      params: {
+        lat: 37.783708,
+        lng: -122.4177484
       }
     }).then(function(res){
       return res.data;
     });
-  }
+  };
   
   var getLyftEstimates = function(userData, token) {
     return $http({
@@ -53,10 +53,10 @@ angular.module('canoe.lyftServices', [])
         authorization: 'bearer ' + token
       },
       params: {
-        start_lat: 37.773972,
-        start_lng: -122.431297,
-        end_lat: 37.2358,
-        end_lng: -121.9624
+        start_lat: 37.783708,
+        start_lng: -122.4177484,
+        end_lat: 37.711147,
+        end_lng: -122.4507667
       }
     }).then(function(res) {
       return res.data;
@@ -71,8 +71,8 @@ angular.module('canoe.lyftServices', [])
         authorization: 'bearer ' + token
       },
       params: {
-        lat: 37.773972,
-        lng: -122.431297
+        lat: 37.783708,
+        lng: -122.4177484
       }
     }).then(function(res) {
       return res.data;
@@ -80,6 +80,7 @@ angular.module('canoe.lyftServices', [])
   };
 
   return {
+    getLyftDriversNearBy: getLyftDriversNearBy,
     getLyftEstimates: getLyftEstimates,
     getLyftEta: getLyftEta
   };
