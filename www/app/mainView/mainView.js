@@ -1,6 +1,8 @@
 angular.module('canoe.main', [])
 
-.controller('MainCtrl', function($scope, UberDetails, UberAuth, Auth, Details) {
+.controller('MainCtrl', function($scope, UberDetails, UberAuth, LyftDetails, LyftAuth) {
+
+	$scope.testText = 'Compare realtime data between Uber and Lyft';
 
   //////////////////UBER DETAILS/////////////////////
   $scope.uberBearer;
@@ -33,15 +35,37 @@ angular.module('canoe.main', [])
   };
   ///////////////////////////////////////////////
 
-  Auth.getLyftToken().then(function(token) {
-    // $scope.token = token.access_token;
-    console.log(Details.getLyftEstimates(null, token.access_token));
-    console.log(Details.getLyftEta(null, token.access_token));
-    // console.log(Details.getLyftDriversNearBy(null, token.access_token));
-  });
 
-	$scope.testText = 'Compare realtime data between Uber and Lyft';
-	// $scope.getLyftDrivers = getLyftDriversNearBy().then(function(data){
-	// 	$scope.drivers = data.nearbydrivers.drivers.location;
-	// })
+  /////////////////LYFT DETAILS///////////////////
+  $scope.lyftBearer;
+  $scope.lyftRefresh;
+
+  LyftAuth.getLyftToken(getParameterByName('code')).then(function(token) {
+    $scope.lyftBearer = token.access_token;
+    $scope.lyftRefresh = token.refresh_token;
+  });
+  console.log($scope.lyftBearer + ' < ------------ lyftBearer');
+
+  $scope.getNearbyLyftDrivers = function() {
+    LyftDetails.getLyftDriversNearBy($scope.lyftBearer).then(function(drivers) {
+      console.log(drivers);
+      //do stuff with nearby drivers
+    });
+  };
+
+  $scope.getLyftEstimates = function() {
+    LyftDetails.getLyftEstimates($scope.lyftBearer).then(function(estimates) {
+      console.log(estimates);
+      //do stuff with estimates
+    });
+  };
+
+  $scope.getLyftEta = function() {
+    LyftDetails.getLyftEta($scope.lyftBearer).then(function(eta) {
+      console.log(eta);
+      //do stuff with eta
+    });
+  };
+  ////////////////////////////////////////////////
+
 });

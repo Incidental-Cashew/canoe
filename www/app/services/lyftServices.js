@@ -1,56 +1,30 @@
 // ADD LYFT FACTORY
 angular.module('canoe.lyftServices', [])
 
-.factory('Auth', function($http, $window) {
-  
-  var postman = 'Basic T1RheS12M2RjMFJmOmYwZlFfYlBwbTFYV0M2N0k0Yzg2TldvazRVN2pDaXpj';
+.factory('LyftDetails', function($http) {
 
-  var getLyftToken = function() {
+  var getLyftDriversNearBy = function(bearer) {
     return $http({
-      url: 'https://api.lyft.com/oauth/token',
-      method: 'POST',
+      method: 'GET',
+      url: 'https://api.lyft.com/v1/drivers',
       headers: {
-        'content-type': 'application/json',
-        authorization: postman
+        Authorization: 'Bearer ' + bearer
       },
-      data: {
-        grant_type: 'client_credentials',
-        scope: 'public'
+      params: {
+        lat: 37.766249,
+        lng: -122.418375
       }
-    }).then(function(res) {
-      console.log(res.data.access_token);
-      $window.token = res.data.access_token;
-      return res.data;
+    }).then(function(response){
+      return response.data;
     });
   };
-
-  return {getLyftToken: getLyftToken};
-
-})
-
-.factory('Details', function($http) {
-  var getLyftDriversNearBy = function(userData, token) {
-    return $http({
-      url: 'https://api.lyft.com/v1/drivers',
-      method: GET,
-      headers: {
-        Authorization: 'bearer' + token
-      },
-      data: {
-        lat: 37.773972,
-        lng: -122.431297,
-      }
-    }).then(function(res){
-      return res.data;
-    });
-  }
   
-  var getLyftEstimates = function(userData, token) {
+  var getLyftEstimates = function(bearer) {
     return $http({
-      url: 'https://api.lyft.com/v1/cost',
       method: 'GET',
+      url: 'https://api.lyft.com/v1/cost',
       headers: {
-        authorization: 'bearer ' + token
+        Authorization: 'Bearer ' + bearer
       },
       params: {
         start_lat: 37.773972,
@@ -58,30 +32,59 @@ angular.module('canoe.lyftServices', [])
         end_lat: 37.2358,
         end_lng: -121.9624
       }
-    }).then(function(res) {
-      return res.data;
+    }).then(function(response) {
+      return response.data;
     });
   };
 
-  var getLyftEta = function(userData, token) {
+  var getLyftEta = function(bearer) {
     return $http({
-      url: 'https://api.lyft.com/v1/eta',
       method: 'GET',
+      url: 'https://api.lyft.com/v1/eta',
       headers: {
-        authorization: 'bearer ' + token
+        Authorization: 'Bearer ' + bearer
       },
       params: {
-        lat: 37.773972,
-        lng: -122.431297
+        lat: 37.766249,
+        lng: -122.418375
       }
-    }).then(function(res) {
-      return res.data;
-    });
+    }).then(function(response) {
+      return response.data;
+    })
   };
 
   return {
+    getLyftDriversNearBy: getLyftDriversNearBy,
     getLyftEstimates: getLyftEstimates,
     getLyftEta: getLyftEta
+  }
+
+})
+
+.factory('LyftAuth', function($http, $window) {
+  
+  var getLyftToken = function(authCode) {
+    console.log(authCode);
+    return $http({
+      method: 'POST',
+      url: 'https://api.lyft.com/oauth/token',
+      headers: {
+        'Content_Type': 'application/json',
+        // Authorization: 'Basic base64(XYarc8030gYN:9hjc6Jle563hgeSRCCSOuo993fy7EXFL)'
+        Authorization: 'Basic WFlhcmM4MDMwZ1lOOjloamM2SmxlNTYzaGdlU1JDQ1NPdW85OTNmeTdFWEZM' //generated with clientid and clientsecret
+      },
+      data: {
+        'grant_type': 'authorization_code',
+        code: authCode
+      }
+    }).then(function(response) {
+      console.log(JSON.stringify(response.data));
+      return response.data;
+    })
   };
+
+  return {
+    getLyftToken: getLyftToken
+  }
 
 });

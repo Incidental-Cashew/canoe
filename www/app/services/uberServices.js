@@ -130,15 +130,3 @@ angular.module('canoe.uberServices', [])
     getUberToken: getUberToken
   }
 });
-
-
-
-
-
-
-
-
-
-
-
-
