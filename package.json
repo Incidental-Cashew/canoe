@@ -11,11 +11,7 @@
   },
   "repository": {
     "type": "git",
-<<<<<<< f197f3e881c72267da729bb920f22c2ac7fa6350
     "url": "https://github.com/Incidental-Cashew/canoe.git"
-=======
-    "url": "git+https://github.com/clardizabal/canoe.git"
->>>>>>> add google map dependent files
   },
   "license": "UNLICENSED",
   "private": true,
@@ -31,13 +27,11 @@
     "gulp": "^3.5.6",
     "gulp-concat": "^2.2.0",
     "gulp-minify-css": "^0.3.0",
-<<<<<<< f197f3e881c72267da729bb920f22c2ac7fa6350
     "gulp-rename": "^1.2.0",
     "gulp-sass": "^2.0.4",
-    "mongodb": "^2.1.16"
-=======
+    "mongoose": "^4.4.11",
+    "mongodb": "^2.1.16",
     "gulp-rename": "^1.2.0"
->>>>>>> add google map dependent files
   },
   "cordovaPlugins": [
     "cordova-plugin-device",

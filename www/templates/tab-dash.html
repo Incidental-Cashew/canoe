@@ -1,17 +1,34 @@
 <ion-view view-title="Dashboard">
   <ion-content class="padding">
-    <h2>Welcome to Ionic</h2>
-    <p>
-    This is the Ionic starter for tabs-based apps. For other starters and ready-made templates, check out the <a href="http://market.ionic.io/starters" target="_blank">Ionic Market</a>.
-    </p>
-    <p>
-      To edit the content of each tab, edit the corresponding template file in <code>www/templates/</code>. This template is <code>www/templates/tab-dash.html</code>
-    </p>
-    <p>
-    If you need help with your app, join the Ionic Community on the <a href="http://forum.ionicframework.com" target="_blank">Ionic Forum</a>. Make sure to <a href="http://twitter.com/ionicframework" target="_blank">follow us</a> on Twitter to get important updates and announcements for Ionic developers.
-    </p>
-    <p>
-      For help sending push notifications, join the <a href="https://apps.ionic.io/signup" target="_blank">Ionic Platform</a> and check out <a href="http://docs.ionic.io/docs/push-overview" target="_blank">Ionic Push</a>. We also have other services available.
-    </p>
+    <h2>Canoe</h2>
+
+    <table style="width:100%">
+    <tr>
+      <td>Ride</td>
+      <td>Cost Max</td>
+      <td>Cost Min</td>
+      <td>Distance</td>
+      <td>Trip Duration</td>
+      <td>ETA</td>   
+    </tr>
+
+    <tr ng-repeat='est in lyftEstimates'>
+      <td>{{est.display_name}}</td>
+      <td>{{est.estimated_cost_cents_max / 100 | currency}}</td>
+      <td>{{est.estimated_cost_cents_min / 100 | currency}}</td>
+      <td>{{est.estimated_distance_miles + ' miles'}}</td>
+      <td>{{est.estimated_duration_seconds | secondsToMinutes}}</td>
+      <td>{{est.eta_seconds | secondsToMinutes}}</td>
+    </tr>
+
+    <tr ng-repeat='est in uberEstimates'>
+      <td>{{est.localized_display_name}}</td>
+      <td>{{est.high_estimate | currency}}</td>
+      <td>{{est.minimum | currency}}</td>
+      <td>{{est.distance + ' miles'}}</td>
+      <td>{{est.duration | secondsToMinutes}}</td>   
+    </tr>
+    </table>
+
   </ion-content>
 </ion-view>
