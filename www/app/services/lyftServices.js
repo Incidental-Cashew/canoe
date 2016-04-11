@@ -14,11 +14,13 @@ angular.module('canoe.lyftServices', [])
         authorization: postman
       },
       data: {
-        grant_type: 'authorization_code',
-        code: authCode
+        grant_type: 'client_credentials',
+        // grant_type: 'authorization_code',
+        scope: 'public'
+        // code: authCode
       }
     }).then(function(res) {
-      console.log(res.data.access_token);
+      console.log('TOKEN: ', res.data.access_token);
       return res.data;
     });
   };
@@ -44,12 +46,12 @@ angular.module('canoe.lyftServices', [])
     });
   };
 
-  var getLyftEstimates = function(bearer) {
+  var getLyftEstimates = function(userData, token) {
     return $http({
       method: 'GET',
       url: 'https://api.lyft.com/v1/cost',
       headers: {
-        Authorization: 'Bearer ' + bearer
+        authorization: 'bearer ' + token
       },
       params: {
         start_lat: 37.783708,
@@ -62,12 +64,12 @@ angular.module('canoe.lyftServices', [])
     });
   };
 
-  var getLyftEta = function(bearer) {
+  var getLyftEta = function(userData, token) {
     return $http({
       method: 'GET',
       url: 'https://api.lyft.com/v1/eta',
       headers: {
-        Authorization: 'Bearer ' + bearer
+        authorization: 'bearer ' + token
       },
       params: {
         lat: 37.783708,

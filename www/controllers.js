@@ -7,14 +7,14 @@ angular.module('canoe.controllers', [])
   }
 }])
 
-.controller('DashCtrl', function($scope, Auth, LyftDetails, UberDetails) {
+.controller('DashCtrl', function($scope, LyftAuth, LyftDetails, UberDetails) {
 
     $scope.lyftEstimates;
     $scope.uberEstimates;
 
     // LYFT
     // Request token prior to making GET requests to Lyft API
-    Auth.getLyftToken().then(function(token) {
+    LyftAuth.getLyftToken().then(function(token) {
 
       LyftDetails.getLyftEstimates(null, token.access_token).then(function(value) {
         console.log(value.cost_estimates);
@@ -32,7 +32,7 @@ angular.module('canoe.controllers', [])
     });
 
     // UBER
-    UberDetails.getUberEstimates(null).then(function(value) {
+    UberDetails.getUberPriceEstimates(null).then(function(value) {
       $scope.uberEstimates = value.prices;
     });
 })
