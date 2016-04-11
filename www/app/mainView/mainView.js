@@ -1,6 +1,6 @@
 angular.module('canoe.main', [])
 
-.controller('MainCtrl', function($scope, Auth, Details) {
+.controller('MainCtrl', function($scope, Auth, Details, lyftServices) {
 
   Auth.getLyftToken().then(function(token) {
     // $scope.token = token.access_token;
@@ -9,9 +9,9 @@ angular.module('canoe.main', [])
     console.log(Details.getLyftEta(null, token.access_token));
     // console.log(Details.getLyftDriversNearBy(null, token.access_token));
   });
+  lyftServices.getLyftDriversNearBy().then(function(data){
+    $scope.drivers = data.nearbydrivers.drivers.location;
 
-	$scope.testText = 'Compare realtime data between Uber and Lyft';
-	// $scope.getLyftDrivers = getLyftDriversNearBy().then(function(data){
-	// 	$scope.drivers = data.nearbydrivers.drivers.location;
-	// })
+
+  });
 });

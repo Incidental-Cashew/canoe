@@ -2,7 +2,7 @@
 angular.module('canoe.lyftServices', [])
 
 .factory('Auth', function($http, $window) {
-  
+
   var postman = 'Basic T1RheS12M2RjMFJmOmYwZlFfYlBwbTFYV0M2N0k0Yzg2TldvazRVN2pDaXpj';
 
   var getLyftToken = function() {
@@ -44,7 +44,7 @@ angular.module('canoe.lyftServices', [])
       return res.data;
     });
   };
-  
+
   var getLyftEstimates = function(userData, token) {
     return $http({
       url: 'https://api.lyft.com/v1/cost',
@@ -81,8 +81,9 @@ angular.module('canoe.lyftServices', [])
 
   return {
     getLyftDriversNearBy: getLyftDriversNearBy,
+    getLyftEta: getLyftEta,
     getLyftEstimates: getLyftEstimates,
-    getLyftEta: getLyftEta
   };
+
 
 });

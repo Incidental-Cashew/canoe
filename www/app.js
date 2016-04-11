@@ -31,6 +31,7 @@ angular.module('canoe', [
 
 .config(function($stateProvider, $urlRouterProvider) {
 
+
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
   // Set up the various states which the app can be in.
@@ -43,6 +44,12 @@ angular.module('canoe', [
     abstract: true,
     templateUrl: 'templates/tabs.html'
   })
+
+   .state('map', {
+     url: '/',
+     templateUrl: 'templates/tab-chats.html',
+     controller: 'ChatsCtrl'
+   })
 
   // Each tab has its own nav history stack:
 
