@@ -9,14 +9,15 @@ angular.module('canoe.uberServices', [])
       Authorization: 'Token 4SETeVarXmqjMneX0W7AlGgwjDmKuku7K7A6Ydqg',
       params: {
         server_token: '4SETeVarXmqjMneX0W7AlGgwjDmKuku7K7A6Ydqg',
-        start_latitude: 37.766249, //userData.startLat
-        start_longitude: -122.418375, //userData.startLong
-        end_latitude: 37.2358, //userData.endLat
-        end_longitude: -121.9624 //userData.endLong
+        start_latitude: 37.783708, //userData.startLat
+        start_longitude: -122.4177484, //userData.startLong
+        end_latitude: 37.711147, //userData.endLat
+        end_longitude: -122.4507667 //userData.endLong
       }
     }).then(function(res) {
       // do something with response
       console.log(JSON.stringify(res.data));
+      return res.data;
     });
   };
 
@@ -26,13 +27,14 @@ angular.module('canoe.uberServices', [])
       url: 'https://api.uber.com/v1/estimates/time',
       params: {
         server_token: '4SETeVarXmqjMneX0W7AlGgwjDmKuku7K7A6Ydqg',
-        start_latitude: 37.766249, //userData.startLat
-        start_longitude: -122.418375, //userData.startLong
-        end_latitude: 37.2358, //userData.endLat
-        end_longitude: -121.9624 //userData.endLong
+        start_latitude: 37.783708, //userData.startLat
+        start_longitude: -122.4177484, //userData.startLong
+        end_latitude: 37.711147, //userData.endLat
+        end_longitude: -122.4507667 //userData.endLong
       }
     }).then(function(res) {
       console.log(JSON.stringify(res.data));
+      return res.data;
     });
   };
 
@@ -45,10 +47,10 @@ angular.module('canoe.uberServices', [])
         'Content-type': 'application/json'
       },
       data: {
-        start_latitude: 37.766249, //userData.startLat
-        start_longitude: -122.418375, //userData.startLong
-        end_latitude: 37.2358, //userData.endLat
-        end_longitude: -121.9624 //userData.endLong
+        start_latitude: 37.783708, //userData.startLat
+        start_longitude: -122.4177484, //userData.startLong
+        end_latitude: 37.711147, //userData.endLat
+        end_longitude: -122.4507667 //userData.endLong
       }
     }).then(function(res) {
       console.log(JSON.stringify(res));
