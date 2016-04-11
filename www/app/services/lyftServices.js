@@ -1,11 +1,11 @@
 // ADD LYFT FACTORY
 angular.module('canoe.lyftServices', [])
 
-.factory('Auth', function($http, $window) {
+.factory('LyftAuth', function($http, $window) {
 
   var postman = 'Basic T1RheS12M2RjMFJmOmYwZlFfYlBwbTFYV0M2N0k0Yzg2TldvazRVN2pDaXpj';
 
-  var getLyftToken = function() {
+  var getLyftToken = function(authCode) {
     return $http({
       url: 'https://api.lyft.com/oauth/token',
       method: 'POST',
@@ -14,23 +14,22 @@ angular.module('canoe.lyftServices', [])
         authorization: postman
       },
       data: {
-        grant_type: 'client_credentials',
-        scope: 'public'
+        grant_type: 'authorization_code',
+        code: authCode
       }
     }).then(function(res) {
       console.log(res.data.access_token);
-      $window.token = res.data.access_token;
       return res.data;
     });
   };
 
   return {getLyftToken: getLyftToken};
-
 })
 
 .factory('LyftDetails', function($http) {
   var getLyftDriversNearBy = function(userData, token) {
     return $http({
+      method: 'GET',
       url: 'https://api.lyft.com/v1/drivers',
       method: 'GET',
       headers: {
@@ -40,17 +39,17 @@ angular.module('canoe.lyftServices', [])
         lat: 37.783708,
         lng: -122.4177484
       }
-    }).then(function(res){
-      return res.data;
+    }).then(function(response){
+      return response.data;
     });
   };
 
-  var getLyftEstimates = function(userData, token) {
+  var getLyftEstimates = function(bearer) {
     return $http({
-      url: 'https://api.lyft.com/v1/cost',
       method: 'GET',
+      url: 'https://api.lyft.com/v1/cost',
       headers: {
-        authorization: 'bearer ' + token
+        Authorization: 'Bearer ' + bearer
       },
       params: {
         start_lat: 37.783708,
@@ -58,25 +57,25 @@ angular.module('canoe.lyftServices', [])
         end_lat: 37.711147,
         end_lng: -122.4507667
       }
-    }).then(function(res) {
-      return res.data;
+    }).then(function(response) {
+      return response.data;
     });
   };
 
-  var getLyftEta = function(userData, token) {
+  var getLyftEta = function(bearer) {
     return $http({
-      url: 'https://api.lyft.com/v1/eta',
       method: 'GET',
+      url: 'https://api.lyft.com/v1/eta',
       headers: {
-        authorization: 'bearer ' + token
+        Authorization: 'Bearer ' + bearer
       },
       params: {
         lat: 37.783708,
         lng: -122.4177484
       }
-    }).then(function(res) {
-      return res.data;
-    });
+    }).then(function(response) {
+      return response.data;
+    })
   };
 
   return {
@@ -84,6 +83,5 @@ angular.module('canoe.lyftServices', [])
     getLyftEta: getLyftEta,
     getLyftEstimates: getLyftEstimates,
   };
+})
 
-
-});
