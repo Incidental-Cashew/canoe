@@ -1,4 +1,4 @@
-angular.module('canoe.controllers', ['ngMap'])
+angular.module('canoe.controllers', ['ngMap', 'google.places'])
 
 .filter('secondsToMinutes', [function() {
   return function(seconds) {
@@ -58,6 +58,71 @@ navigator.geolocation.getCurrentPosition(function(pos) {
     enableFriends: true
   };
 })
+
+.controller('MainCtrl', function ($scope) {
+    $scope.place = null;
+
+    $scope.myPlaces = [
+        buildGooglePlacesResult({
+            address: {
+                street: 'International Airport - T1',
+                suburb: 'Sydney',
+                state: 'NSW'
+            },
+            location: { latitude: -33.936722, longitude: 151.164266 }
+        }),
+        buildGooglePlacesResult({
+            address: {
+                street: 'Domestic Airport - T2',
+                suburb: 'Sydney',
+                state: 'NSW'
+            },
+            location: { latitude: -33.933617, longitude: 151.181630 }
+        }),
+        buildGooglePlacesResult({
+            address: {
+                street: 'Domestic Airport - T3',
+                suburb: 'Sydney',
+                state: 'NSW'
+            },
+            location: { latitude: -33.933076, longitude: 151.181270 }
+        })
+    ];
+
+    function buildGooglePlacesResult(config) {
+        // Build a synthetic google.maps.places.PlaceResult object
+        return {
+            formatted_address: config.address.street + ', ' + config.address.suburb + ', ' + config.address.state,
+            address_components: [
+                {
+                    long_name: config.address.street,
+                    short_name : config.address.street,
+                    types: [ 'route' ]
+                },
+                {
+                    long_name: config.address.suburb,
+                    short_name: config.address.suburb,
+                    types: [ 'locality' ]
+                },
+                {
+                    long_name: config.address.state,
+                    short_name: config.address.state,
+                    types: [ 'administrative_area_level_1' ]
+                }
+            ],
+            geometry: {
+                location: {
+                    lat: function () { return config.location.latitude },
+                    lng: function () { return config.location.longitude }
+                }
+            }
+        };
+    }
+  })
+
+
+
+
 // controls the modal for setting a location/destination
 .controller('ModalCtrl', function($scope, $ionicModal) {
   $ionicModal.fromTemplateUrl('./templates/searchModel.html', {
