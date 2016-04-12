@@ -16,7 +16,7 @@ angular.module('canoe.uberServices', [])
       }
     }).then(function(res) {
       // do something with response
-      console.log(JSON.stringify(res.data));
+      // console.log(JSON.stringify(res.data));
       return res.data;
     });
   };
@@ -33,7 +33,7 @@ angular.module('canoe.uberServices', [])
         end_longitude: -122.4507667 //userData.endLong
       }
     }).then(function(res) {
-      console.log(JSON.stringify(res.data));
+      // console.log(JSON.stringify(res.data));
       return res.data;
     });
   };
@@ -53,7 +53,7 @@ angular.module('canoe.uberServices', [])
         end_longitude: -122.4507667 //userData.endLong
       }
     }).then(function(res) {
-      console.log(JSON.stringify(res));
+      // console.log(JSON.stringify(res));
       return res;
     });
   };
@@ -68,7 +68,7 @@ angular.module('canoe.uberServices', [])
         'Content-type': 'application/json'
       }
     }).then(function(res) {
-      console.log(JSON.stringify(res));
+      // console.log(JSON.stringify(res));
     });
   };
 
