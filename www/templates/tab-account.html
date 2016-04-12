@@ -1,9 +1,21 @@
 <ion-view view-title="Account">
   <ion-content>
-    <ion-list>
+<!--     <ion-list>
     <ion-toggle  ng-model="settings.enableFriends">
         Enable Friends
     </ion-toggle>
-    </ion-list>
+    </ion-list> -->
+    <div ng-controller="MainCtrl" class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <form class="form">
+                    <input class="form-control" g-places-autocomplete custom-places="myPlaces" ng-model="place"/>
+                </form>
+
+                <h5>Result:</h5>
+                <span>{{place.geometry.location}}</span>
+            </div>
+        </div>
+    </div>
   </ion-content>
 </ion-view>

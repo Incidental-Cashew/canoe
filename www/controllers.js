@@ -1,4 +1,4 @@
-angular.module('canoe.controllers', [])
+angular.module('canoe.controllers', ['ngMap', 'google.places'])
 
 .filter('secondsToMinutes', [function() {
   return function(seconds) {
@@ -7,11 +7,19 @@ angular.module('canoe.controllers', [])
   }
 }])
 
-.controller('DashCtrl', function($scope, $ionicPopover, $ionicActionSheet, $timeout, LyftAuth, LyftDetails, UberDetails) {
+.controller('DashCtrl', function($scope, LyftAuth, LyftDetails, UberDetails) {
 
     $scope.lyftEstimates;
     $scope.uberEstimates;
-    $scope.rideEstimates;
+
+    $scope.selected = {};
+
+    $scope.selectUber = function() {
+      console.log($scope.selected.ride);
+    };
+
+    $scope.selectedLyft = 2;
+    $scope.selectedUber = 0;
 
     // LYFT
     // Request token prior to making GET requests to Lyft API
@@ -29,7 +37,9 @@ angular.module('canoe.controllers', [])
         $scope.lyftEstimates.forEach(function(ride, index) {
           ride.eta_seconds = value.eta_estimates[index].eta_seconds;
         });
+
       });
+
     });
 
     // UBER
@@ -38,46 +48,29 @@ angular.module('canoe.controllers', [])
       $scope.uberEstimates = value.prices;
 
       UberDetails.getUberTimeEstimates(null).then(function(value) {
-        // console.log(value.times);
+        console.log(value.times);
+
         $scope.uberEstimates.forEach(function(ride, index) {
           ride.eta_seconds = value.times[index].estimate;
         });
 
-        // $scope.rideEstimates = $scope.lyftEstimates.concat($scope.uberEstimates);
       });
     });
  
 })
 
-.controller('ChatsCtrl', function($scope, Chats, NavigatorGeolocation, NgMap) {
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
+.controller('ChatsCtrl', function($scope, NgMap) {
 
-  NgMap.getMap().then(function(map) {
-   console.log(map.getCenter());
-   console.log('markers', map.markers);
-   console.log('shapes', map.shapes);
- });
+var options = {enableHighAccuracy: true};
 
- NavigatorGeolocation.getCurrentPosition()
-  .then(function(position) {
-    var lat = position.coords.latitude, lng = position.coords.longitude;
-    //TODO: add this into map by default
-  })
-  var options = {timeout: 10000, enableHighAccuracy: true};
-  $scope.map = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
-
-
-
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  };
+// this will be used later
+navigator.geolocation.getCurrentPosition(function(pos) {
+                $scope.position = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+                console.log(JSON.stringify($scope.position));
+            },
+            function(error) {
+                alert('Unable to get location: ' + error.message);
+            }, options);
 })
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
@@ -88,4 +81,97 @@ angular.module('canoe.controllers', [])
   $scope.settings = {
     enableFriends: true
   };
+})
+
+.controller('MainCtrl', function ($scope) {
+    $scope.place = null;
+
+    $scope.myPlaces = [
+        buildGooglePlacesResult({
+            address: {
+                street: 'International Airport - T1',
+                suburb: 'Sydney',
+                state: 'NSW'
+            },
+            location: { latitude: -33.936722, longitude: 151.164266 }
+        }),
+        buildGooglePlacesResult({
+            address: {
+                street: 'Domestic Airport - T2',
+                suburb: 'Sydney',
+                state: 'NSW'
+            },
+            location: { latitude: -33.933617, longitude: 151.181630 }
+        }),
+        buildGooglePlacesResult({
+            address: {
+                street: 'Domestic Airport - T3',
+                suburb: 'Sydney',
+                state: 'NSW'
+            },
+            location: { latitude: -33.933076, longitude: 151.181270 }
+        })
+    ];
+
+    function buildGooglePlacesResult(config) {
+        // Build a synthetic google.maps.places.PlaceResult object
+        return {
+            formatted_address: config.address.street + ', ' + config.address.suburb + ', ' + config.address.state,
+            address_components: [
+                {
+                    long_name: config.address.street,
+                    short_name : config.address.street,
+                    types: [ 'route' ]
+                },
+                {
+                    long_name: config.address.suburb,
+                    short_name: config.address.suburb,
+                    types: [ 'locality' ]
+                },
+                {
+                    long_name: config.address.state,
+                    short_name: config.address.state,
+                    types: [ 'administrative_area_level_1' ]
+                }
+            ],
+            geometry: {
+                location: {
+                    lat: function () { return config.location.latitude },
+                    lng: function () { return config.location.longitude }
+                }
+            }
+        };
+    }
+  })
+
+
+
+
+// controls the modal for setting a location/destination
+.controller('ModalCtrl', function($scope, $ionicModal) {
+  $ionicModal.fromTemplateUrl('./templates/searchModel.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+  $scope.openModal = function() {
+    console.log('FIRE');
+    $scope.modal.show();
+  };
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+  };
+  //Cleanup the modal when we're done with it!
+  $scope.$on('$destroy', function() {
+    $scope.modal.remove();
+  });
+  // Execute action on hide modal
+  $scope.$on('modal.hidden', function() {
+    // Execute action
+  });
+  // Execute action on remove modal
+  $scope.$on('modal.removed', function() {
+    // Execute action
+  });
 });

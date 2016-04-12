@@ -13,40 +13,49 @@
 
       <label class="item item-input item-select">
         <div class="input-label"></div>
-        <select>
-          <option ng-repeat='est in uberEstimates'>{{est.localized_display_name}}</option>
+        <select ng-model='selected.ride' ng-change='selectUber()' ng-options='est.localized_display_name for est in uberEstimates'>
         </select>
       </label>
 
     </div>
+<!--           <option ng-repeat='est in uberEstimates'>{{est.localized_display_name}}</option> -->
+<!-- ng-options='est.localized_display_name for est in uberEstimates' -->
 
     <table style="width:100%">
     <tr>
       <td>Ride</td>
       <td>Cost Min</td>
       <td>Cost Max</td>
-      <!-- <td>Distance</td> -->
-      <!-- <td>Trip Duration</td> -->
       <td>ETA</td>   
     </tr>
 
-    <tr ng-repeat='est in lyftEstimates'>
+    <tr>
+      <td>{{lyftEstimates[selectedLyft].display_name}}</td>
+      <td>{{lyftEstimates[selectedLyft].estimated_cost_cents_min / 100 | currency}}</td>
+      <td>{{lyftEstimates[selectedLyft].estimated_cost_cents_max / 100 | currency}}</td>
+      <td>{{lyftEstimates[selectedLyft].eta_seconds | secondsToMinutes}}</td>
+    </tr>
+
+    <tr>
+      <td>{{selected.ride.localized_display_name}}</td>
+      <td>{{(selected.ride.low_estimate | currency) || 'N/A'}}</td>
+      <td>{{(selected.ride.high_estimate | currency) || 'N/A'}}</td>
+      <td>{{selected.ride.eta_seconds | secondsToMinutes}}</td>
+    </tr>
+
+<!--     <tr ng-repeat='est in lyftEstimates'>
       <td>{{est.display_name}}</td>
       <td>{{est.estimated_cost_cents_min / 100 | currency}}</td>
       <td>{{est.estimated_cost_cents_max / 100 | currency}}</td>
-      <!-- <td>{{est.estimated_distance_miles + ' miles'}}</td> -->
-      <!-- <td>{{est.estimated_duration_seconds | secondsToMinutes}}</td> -->
       <td>{{est.eta_seconds | secondsToMinutes}}</td>
-    </tr>
+    </tr> -->
 
-    <tr ng-repeat='est in uberEstimates'>
+<!--     <tr ng-repeat='est in uberEstimates'>
       <td>{{est.localized_display_name}}</td>
       <td>{{(est.low_estimate | currency) || 'N/A'}}</td>
       <td>{{(est.high_estimate | currency) || 'N/A'}}</td>
-      <!-- <td>{{est.distance + ' miles'}}</td> -->
-      <!-- <td>{{est.duration | secondsToMinutes}}</td> -->
       <td>{{est.eta_seconds | secondsToMinutes}}</td>
-    </tr>
+    </tr> -->
     </table>
 
   </ion-content>
