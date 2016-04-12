@@ -4,58 +4,40 @@
 
     <div class="list">
 
-      <label class="item item-input item-select">
-        <div class="input-label"></div>
-        <select ng-model='selectedLyft.ride' ng-options='est.display_name for est in lyftEstimates'>
+      <label ng-style='selectedUber' class="item item-input item-select">
+        <div ng-style='selectedUber' class="input-label">Uber Ride Type:</div>
+        <select ng-style='selectedUber' ng-model='selectedUber.ride' ng-options='est.localized_display_name for est in uberEstimates'>
         </select>
       </label>
 
-      <label class="item item-input item-select">
-        <div class="input-label"></div>
-        <select ng-model='selectedUber.ride' ng-options='est.localized_display_name for est in uberEstimates'>
+      <label ng-style='selectedLyft' class="item item-input item-select">
+        <div ng-style='selectedLyft' class="input-label">Lyft Ride Type:</div>
+        <select ng-style='selectedLyft' ng-model='selectedLyft.ride' ng-init='selectedLyft.ride = selectedLyft.ride || lyftEstimates[0]' ng-options='est.display_name for est in lyftEstimates'>
         </select>
       </label>
 
     </div>
-<!--           <option ng-repeat='est in uberEstimates'>{{est.localized_display_name}}</option> -->
-<!-- ng-options='est.localized_display_name for est in uberEstimates' -->
 
-    <table style="width:100%">
-    <tr>
-      <td>Ride</td>
-      <td>Cost Min</td>
-      <td>Cost Max</td>
-      <td>ETA</td>   
-    </tr>
+    <div class="row">
+      <div class="col">Ride</div>
+      <div class="col">Cost Min</div>
+      <div class="col">Cost Max</div>
+      <div class="col">ETA</div>
+    </div>
 
-    <tr>
-      <td>{{selectedLyft.ride.display_name}}</td>
-      <td>{{selectedLyft.ride.estimated_cost_cents_min / 100 | currency}}</td>
-      <td>{{selectedLyft.ride.estimated_cost_cents_max / 100 | currency}}</td>
-      <td>{{selectedLyft.ride.eta_seconds | secondsToMinutes}}</td>
-    </tr>
+    <div class="row">
+      <div class="col">{{selectedUber.ride.localized_display_name}}</div>
+      <div class="col">{{(selectedUber.ride.low_estimate | currency) || 'N/A'}}</div>
+      <div class="col">{{(selectedUber.ride.high_estimate | currency) || 'N/A'}}</div>
+      <div class="col">{{selectedUber.ride.eta_seconds | secondsToMinutes}}</div>
+    </div>
 
-    <tr>
-      <td>{{selectedUber.ride.localized_display_name}}</td>
-      <td>{{(selectedUber.ride.low_estimate | currency) || 'N/A'}}</td>
-      <td>{{(selectedUber.ride.high_estimate | currency) || 'N/A'}}</td>
-      <td>{{selectedUber.ride.eta_seconds | secondsToMinutes}}</td>
-    </tr>
-
-<!--     <tr ng-repeat='est in lyftEstimates'>
-      <td>{{est.display_name}}</td>
-      <td>{{est.estimated_cost_cents_min / 100 | currency}}</td>
-      <td>{{est.estimated_cost_cents_max / 100 | currency}}</td>
-      <td>{{est.eta_seconds | secondsToMinutes}}</td>
-    </tr> -->
-
-<!--     <tr ng-repeat='est in uberEstimates'>
-      <td>{{est.localized_display_name}}</td>
-      <td>{{(est.low_estimate | currency) || 'N/A'}}</td>
-      <td>{{(est.high_estimate | currency) || 'N/A'}}</td>
-      <td>{{est.eta_seconds | secondsToMinutes}}</td>
-    </tr> -->
-    </table>
+    <div class="row">
+      <div class="col">{{selectedLyft.ride.display_name}}</div>
+      <div class="col">{{selectedLyft.ride.estimated_cost_cents_min / 100 | currency}}</div>
+      <div class="col">{{selectedLyft.ride.estimated_cost_cents_max / 100 | currency}}</div>
+      <div class="col">{{selectedLyft.ride.eta_seconds | secondsToMinutes}}</div>
+    </div>
 
   </ion-content>
 </ion-view>

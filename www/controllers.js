@@ -12,8 +12,15 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
     $scope.lyftEstimates;
     $scope.uberEstimates;
 
-    $scope.selectedUber = {};
-    $scope.selectedLyft = {};
+    $scope.selectedUber = {
+      'background-color': 'black',
+      'color': 'white'
+    };
+
+    $scope.selectedLyft = {
+      'background-color': '#ff00cc',
+      'color': 'white'
+    };
 
     // LYFT
     // Request token prior to making GET requests to Lyft API
@@ -27,6 +34,8 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
       LyftDetails.getLyftEta(null, token.access_token).then(function(value) {
         // console.log(value.eta_estimates);
 
+        $scope.selectedLyft.ride = $scope.lyftEstimates[2];
+
         // ADD ETA to Lyft Estimates
         $scope.lyftEstimates.forEach(function(ride, index) {
           ride.eta_seconds = value.eta_estimates[index].eta_seconds;
@@ -38,15 +47,17 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
 
     // UBER
     UberDetails.getUberPriceEstimates(null).then(function(value) {
-      console.log(value.prices);
+      // console.log(value.prices);
       $scope.uberEstimates = value.prices;
 
       UberDetails.getUberTimeEstimates(null).then(function(value) {
-        console.log(value.times);
+        // console.log(value.times);
+        $scope.selectedUber.ride = $scope.uberEstimates[0];
 
         $scope.uberEstimates.forEach(function(ride, index) {
           ride.eta_seconds = value.times[index].estimate;
         });
+
 
       });
     });
