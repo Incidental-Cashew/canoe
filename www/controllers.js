@@ -1,7 +1,11 @@
-angular.module('starter.controllers', [])
+angular.module('canoe.controllers', ['ngMap'])
 
-.controller('DashCtrl', function($scope) {})
-
+.filter('secondsToMinutes', [function() {
+  return function(seconds) {
+    var minutes = Math.floor((seconds / 60));
+    return minutes + 'min';
+  }
+}])
 .controller('ChatsCtrl', function($scope, NgMap) {
 
 var options = {enableHighAccuracy: true};
@@ -14,9 +18,36 @@ navigator.geolocation.getCurrentPosition(function(pos) {
             function(error) {
                 alert('Unable to get location: ' + error.message);
             }, options);
-
 })
+.controller('DashCtrl', function($scope, LyftAuth, LyftDetails, UberDetails) {
 
+    $scope.lyftEstimates;
+    $scope.uberEstimates;
+
+    // LYFT
+    // Request token prior to making GET requests to Lyft API
+    LyftAuth.getLyftToken().then(function(token) {
+
+      LyftDetails.getLyftEstimates(null, token.access_token).then(function(value) {
+        console.log(value.cost_estimates);
+        $scope.lyftEstimates = value.cost_estimates;
+      });
+
+      LyftDetails.getLyftEta(null, token.access_token).then(function(value) {
+        console.log(value.eta_estimates);
+
+        // ADD ETA to Lyft Estimates
+        $scope.lyftEstimates.forEach(function(ride, index) {
+          ride.eta_seconds = value.eta_estimates[index].eta_seconds;
+        });
+      });
+    });
+
+    // UBER
+    UberDetails.getUberPriceEstimates(null).then(function(value) {
+      $scope.uberEstimates = value.prices;
+    });
+})
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
   $scope.chat = Chats.get($stateParams.chatId);
