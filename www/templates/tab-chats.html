@@ -3,10 +3,20 @@
      </ion-nav-bar>
   <ion-content ng-controller="ChatsCtrl as vm">
     <ng-model="coords">
-
     <ng-map id="map" center="current-position" disableDefaultUI="true" geo-fallback-center="[40.74, -74.18]" zoom="17" style="height: 600px; padding:0px position:absolute; z-index:-1">
        <marker idkey='1' position="current" animation="Animation.BOUNCE" centered="true" ></marker>
        <div ng-controller="ModalCtrl">
+         <ion-list style="position:absolute; z-index:3">
+          <ion-item ng-click="" >
+            address from goes here
+          </ion-item>
+          <ion-item ng-click="">
+            address to goes here
+          </ion-item>
+        </ion-list>
+         <button class="button button-block button-light" style="position:absolute; padding-left:10px; margin-top:490px;z-index:2" ng-click="openModal()">
+           <p>{{geodecoded}}</p>
+         </button>
        <button class="button button-block button-assertive" style="position:absolute; margin-top:550px;z-index:1" ng-click="openModal()">
          Set Pickup Location
        </button>
