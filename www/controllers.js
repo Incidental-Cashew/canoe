@@ -1,4 +1,4 @@
-angular.module('canoe.controllers', [])
+angular.module('canoe.controllers', ['ngMap'])
 
 .filter('secondsToMinutes', [function() {
   return function(seconds) {
@@ -6,7 +6,19 @@ angular.module('canoe.controllers', [])
     return minutes + 'min';
   }
 }])
+.controller('ChatsCtrl', function($scope, NgMap) {
 
+var options = {enableHighAccuracy: true};
+
+// this will be used later
+navigator.geolocation.getCurrentPosition(function(pos) {
+                $scope.position = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+                console.log(JSON.stringify($scope.position));
+            },
+            function(error) {
+                alert('Unable to get location: ' + error.message);
+            }, options);
+})
 .controller('DashCtrl', function($scope, LyftAuth, LyftDetails, UberDetails) {
 
     $scope.lyftEstimates;
@@ -37,37 +49,6 @@ angular.module('canoe.controllers', [])
     });
 })
 
-.controller('ChatsCtrl', function($scope, Chats, NavigatorGeolocation, NgMap) {
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
-
-  NgMap.getMap().then(function(map) {
-   console.log(map.getCenter());
-   console.log('markers', map.markers);
-   console.log('shapes', map.shapes);
- });
-
- NavigatorGeolocation.getCurrentPosition()
-  .then(function(position) {
-    var lat = position.coords.latitude, lng = position.coords.longitude;
-    //TODO: add this into map by default
-  })
-  var options = {timeout: 10000, enableHighAccuracy: true};
-  $scope.map = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
-
-
-
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  };
-})
-
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
   $scope.chat = Chats.get($stateParams.chatId);
 })
@@ -76,4 +57,32 @@ angular.module('canoe.controllers', [])
   $scope.settings = {
     enableFriends: true
   };
+})
+// controls the modal for setting a location/destination
+.controller('ModalCtrl', function($scope, $ionicModal) {
+  $ionicModal.fromTemplateUrl('./templates/searchModel.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+  $scope.openModal = function() {
+    console.log('FIRE');
+    $scope.modal.show();
+  };
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+  };
+  //Cleanup the modal when we're done with it!
+  $scope.$on('$destroy', function() {
+    $scope.modal.remove();
+  });
+  // Execute action on hide modal
+  $scope.$on('modal.hidden', function() {
+    // Execute action
+  });
+  // Execute action on remove modal
+  $scope.$on('modal.removed', function() {
+    // Execute action
+  });
 });

@@ -21,6 +21,7 @@
     "shelljs": "^0.3.0"
   },
   "dependencies": {
+    "angular-material": "^1.0.7",
     "body-parser": "^1.4.3",
     "express": "^4.4.5",
     "express-partials": "~0.2.0",
