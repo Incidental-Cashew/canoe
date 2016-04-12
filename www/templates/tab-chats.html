@@ -1,14 +1,17 @@
-<ion-view view-title="Chats">
+<ion-view view-title="Canoe">
   <ion-nav-bar class="bar-assertive">
      </ion-nav-bar>
-  <ion-content>
+  <ion-content ng-controller="ChatsCtrl as vm">
+    <ng-model="coords">
 
-    <ng-map center="41,-87" zoom="3"></ng-map>
-
-
-  <div class="row">
-    <div class="col">.col</div>
-    <div class="col">.col</div>
-  </div>
+    <ng-map id="map" center="current-position" disableDefaultUI="true" geo-fallback-center="[40.74, -74.18]" zoom="17" style="height: 600px; padding:0px position:absolute; z-index:-1">
+       <marker idkey='1' position="current" animation="Animation.BOUNCE" centered="true" ></marker>
+       <div ng-controller="ModalCtrl">
+       <button class="button button-block button-assertive" style="position:absolute; margin-top:550px;z-index:1" ng-click="openModal()">
+         Set Pickup Location
+       </button>
+       <div>
+       <div id="coordinates"></div>
+    </ng-map>
   </ion-content>
 </ion-view>
