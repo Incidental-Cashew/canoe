@@ -7,10 +7,11 @@ angular.module('canoe.controllers', [])
   }
 }])
 
-.controller('DashCtrl', function($scope, LyftAuth, LyftDetails, UberDetails) {
+.controller('DashCtrl', function($scope, $ionicPopover, $ionicActionSheet, $timeout, LyftAuth, LyftDetails, UberDetails) {
 
     $scope.lyftEstimates;
     $scope.uberEstimates;
+    $scope.rideEstimates;
 
     // LYFT
     // Request token prior to making GET requests to Lyft API
@@ -22,7 +23,7 @@ angular.module('canoe.controllers', [])
       });
 
       LyftDetails.getLyftEta(null, token.access_token).then(function(value) {
-        console.log(value.eta_estimates);
+        // console.log(value.eta_estimates);
 
         // ADD ETA to Lyft Estimates
         $scope.lyftEstimates.forEach(function(ride, index) {
@@ -33,8 +34,19 @@ angular.module('canoe.controllers', [])
 
     // UBER
     UberDetails.getUberPriceEstimates(null).then(function(value) {
+      console.log(value.prices);
       $scope.uberEstimates = value.prices;
+
+      UberDetails.getUberTimeEstimates(null).then(function(value) {
+        // console.log(value.times);
+        $scope.uberEstimates.forEach(function(ride, index) {
+          ride.eta_seconds = value.times[index].estimate;
+        });
+
+        // $scope.rideEstimates = $scope.lyftEstimates.concat($scope.uberEstimates);
+      });
     });
+ 
 })
 
 .controller('ChatsCtrl', function($scope, Chats, NavigatorGeolocation, NgMap) {

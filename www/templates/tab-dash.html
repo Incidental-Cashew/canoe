@@ -2,31 +2,50 @@
   <ion-content class="padding">
     <h2>Canoe</h2>
 
+    <div class="list">
+
+      <label class="item item-input item-select">
+        <div class="input-label"></div>
+        <select>
+          <option ng-repeat='est in lyftEstimates'>{{est.display_name}}</option>
+        </select>
+      </label>
+
+      <label class="item item-input item-select">
+        <div class="input-label"></div>
+        <select>
+          <option ng-repeat='est in uberEstimates'>{{est.localized_display_name}}</option>
+        </select>
+      </label>
+
+    </div>
+
     <table style="width:100%">
     <tr>
       <td>Ride</td>
-      <td>Cost Max</td>
       <td>Cost Min</td>
-      <td>Distance</td>
-      <td>Trip Duration</td>
+      <td>Cost Max</td>
+      <!-- <td>Distance</td> -->
+      <!-- <td>Trip Duration</td> -->
       <td>ETA</td>   
     </tr>
 
     <tr ng-repeat='est in lyftEstimates'>
       <td>{{est.display_name}}</td>
-      <td>{{est.estimated_cost_cents_max / 100 | currency}}</td>
       <td>{{est.estimated_cost_cents_min / 100 | currency}}</td>
-      <td>{{est.estimated_distance_miles + ' miles'}}</td>
-      <td>{{est.estimated_duration_seconds | secondsToMinutes}}</td>
+      <td>{{est.estimated_cost_cents_max / 100 | currency}}</td>
+      <!-- <td>{{est.estimated_distance_miles + ' miles'}}</td> -->
+      <!-- <td>{{est.estimated_duration_seconds | secondsToMinutes}}</td> -->
       <td>{{est.eta_seconds | secondsToMinutes}}</td>
     </tr>
 
     <tr ng-repeat='est in uberEstimates'>
       <td>{{est.localized_display_name}}</td>
-      <td>{{est.high_estimate | currency}}</td>
-      <td>{{est.minimum | currency}}</td>
-      <td>{{est.distance + ' miles'}}</td>
-      <td>{{est.duration | secondsToMinutes}}</td>   
+      <td>{{(est.low_estimate | currency) || 'N/A'}}</td>
+      <td>{{(est.high_estimate | currency) || 'N/A'}}</td>
+      <!-- <td>{{est.distance + ' miles'}}</td> -->
+      <!-- <td>{{est.duration | secondsToMinutes}}</td> -->
+      <td>{{est.eta_seconds | secondsToMinutes}}</td>
     </tr>
     </table>
 
