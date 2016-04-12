@@ -6,14 +6,13 @@
 
       <label class="item item-input item-select">
         <div class="input-label"></div>
-        <select>
-          <option ng-repeat='est in lyftEstimates'>{{est.display_name}}</option>
+        <select ng-model='selectedLyft.ride' ng-options='est.display_name for est in lyftEstimates'>
         </select>
       </label>
 
       <label class="item item-input item-select">
         <div class="input-label"></div>
-        <select ng-model='selected.ride' ng-change='selectUber()' ng-options='est.localized_display_name for est in uberEstimates'>
+        <select ng-model='selectedUber.ride' ng-options='est.localized_display_name for est in uberEstimates'>
         </select>
       </label>
 
@@ -30,17 +29,17 @@
     </tr>
 
     <tr>
-      <td>{{lyftEstimates[selectedLyft].display_name}}</td>
-      <td>{{lyftEstimates[selectedLyft].estimated_cost_cents_min / 100 | currency}}</td>
-      <td>{{lyftEstimates[selectedLyft].estimated_cost_cents_max / 100 | currency}}</td>
-      <td>{{lyftEstimates[selectedLyft].eta_seconds | secondsToMinutes}}</td>
+      <td>{{selectedLyft.ride.display_name}}</td>
+      <td>{{selectedLyft.ride.estimated_cost_cents_min / 100 | currency}}</td>
+      <td>{{selectedLyft.ride.estimated_cost_cents_max / 100 | currency}}</td>
+      <td>{{selectedLyft.ride.eta_seconds | secondsToMinutes}}</td>
     </tr>
 
     <tr>
-      <td>{{selected.ride.localized_display_name}}</td>
-      <td>{{(selected.ride.low_estimate | currency) || 'N/A'}}</td>
-      <td>{{(selected.ride.high_estimate | currency) || 'N/A'}}</td>
-      <td>{{selected.ride.eta_seconds | secondsToMinutes}}</td>
+      <td>{{selectedUber.ride.localized_display_name}}</td>
+      <td>{{(selectedUber.ride.low_estimate | currency) || 'N/A'}}</td>
+      <td>{{(selectedUber.ride.high_estimate | currency) || 'N/A'}}</td>
+      <td>{{selectedUber.ride.eta_seconds | secondsToMinutes}}</td>
     </tr>
 
 <!--     <tr ng-repeat='est in lyftEstimates'>

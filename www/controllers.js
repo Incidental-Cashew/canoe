@@ -12,14 +12,8 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
     $scope.lyftEstimates;
     $scope.uberEstimates;
 
-    $scope.selected = {};
-
-    $scope.selectUber = function() {
-      console.log($scope.selected.ride);
-    };
-
-    $scope.selectedLyft = 2;
-    $scope.selectedUber = 0;
+    $scope.selectedUber = {};
+    $scope.selectedLyft = {};
 
     // LYFT
     // Request token prior to making GET requests to Lyft API
