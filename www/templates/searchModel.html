@@ -1,12 +1,13 @@
 <ion-modal-view >
-   <ion-header-bar style=" height:65px">
+   <ion-header-bar class="bar-assertive" style="height:65px">
 
+                <!-- // TODO: set currentlocation to form -->
 <div class="bar bar-subheader">
   <h2 class="title">Sub Header</h2>
-  <div ng-controller="MainCtrl" class="container">
+  <div ng-controller="MainCtrl" class="container bar-assertive">
         <div class="row">
                 <form class="form" >
-                    <input class="form-control" style="width:350px; position:absolute; left:8%; right:10%; max-width:100%" g-places-autocomplete custom-places="myPlaces" ng-model="place"/>
+                    <input class="form-control" style="width:350px; position:absolute; left:8%; right:10%; max-width:100%" g-places-autocomplete custom-places="myPlaces" ng-model="place" ng-click=""/>
                 </form>
                <!--  <h5>Result:</h5>
                 <span>{{place.geometry.location}}</span> -->
@@ -17,5 +18,11 @@
   <button class="button" ng-click="closeModal()">Cancel</button>
 
    </ion-header-bar>
-
+<div ng-controller="ChatsCtrl" style="padding-top:85px">
+  <ion-list>
+  <ion-item ng-click="closeModal($event)">
+   Current Location: {{currentLocation}}
+  </ion-item>
+</ion-list>
+</div>
  </ion-modal-view>

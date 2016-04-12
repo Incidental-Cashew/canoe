@@ -61,11 +61,12 @@ navigator.geolocation.getCurrentPosition(function(pos) {
   }).then(function(modal) {
     $scope.modal = modal;
   });
-  $scope.openModal = function() {
-    console.log('FIRE');
+  $scope.openModal = function(currentLocation) {
+    $scope.currentLocation = currentLocation
     $scope.modal.show();
   };
-  $scope.closeModal = function() {
+  $scope.closeModal = function(event) {
+    console.log(event);
     $scope.modal.hide();
   };
   //Cleanup the modal when we're done with it!
