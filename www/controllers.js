@@ -19,7 +19,7 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
     });
   });
 
-})
+
 
 .controller('DashCtrl', function($scope, $window, $state, LyftAuth, LyftDetails, UberDetails, LocationDetails) {
 
