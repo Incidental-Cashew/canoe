@@ -1,13 +1,21 @@
 <ion-modal-view >
-   <ion-header-bar>
+   <ion-header-bar style=" height:65px">
+
+<div class="bar bar-subheader">
+  <h2 class="title">Sub Header</h2>
+  <div ng-controller="MainCtrl" class="container">
+        <div class="row">
+                <form class="form" >
+                    <input class="form-control" style="width:350px; position:absolute; left:8%; right:10%; max-width:100%" g-places-autocomplete custom-places="myPlaces" ng-model="place"/>
+                </form>
+               <!--  <h5>Result:</h5>
+                <span>{{place.geometry.location}}</span> -->
+        </div>
+    </div>
+</div>
      <h1 class="title">Pickup location</h1>
-     <div class="buttons">
   <button class="button" ng-click="closeModal()">Cancel</button>
 
    </ion-header-bar>
 
-   <ion-content>
-     <ion-searchbar></ion-searchbar>
-     Hello!
-   </ion-content>
  </ion-modal-view>
