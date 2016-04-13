@@ -4,7 +4,7 @@
                 <!-- // TODO: set currentlocation to form -->
 <div class="bar bar-subheader">
   <h2 class="title">Sub Header</h2>
-  <div ng-controller="MainCtrl" class="container bar-assertive">
+  <div ng-controller="MainCtrl as mc" class="container bar-assertive">
         <div class="row">
                 <form class="form" >
                     <input class="form-control" style="width:350px; position:absolute; left:8%; right:10%; max-width:100%" g-places-autocomplete custom-places="myPlaces" ng-model="place" ng-click=""/>
@@ -20,8 +20,8 @@
    </ion-header-bar>
 <div ng-controller="ChatsCtrl" style="padding-top:85px">
   <ion-list>
-  <ion-item ng-click="closeModal($event)">
-   Current Location: {{currentLocation}}
+  <ion-item ng-click="closeModal(place.geometry.location)">
+   Current Location: {{currentLocation}} 
   </ion-item>
 </ion-list>
 </div>
