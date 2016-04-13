@@ -7,71 +7,80 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
   }
 }])
 
-.controller('DashCtrl', function($scope, LyftAuth, LyftDetails, UberDetails) {
+.controller('DashCtrl', function($scope, $window, $state, $stateParams, LyftAuth, LyftDetails, UberDetails) {
+  
+  // $state.transitionTo($state.current, $stateParams, {
+  //   reload: true,
+  //   inherit: false,
+  //   notify: true
+  // });
 
-    $scope.lyftEstimates;
-    $scope.uberEstimates;
+  console.log('DASH CONTROLLER');
 
-    $scope.selectedUber = {
-      'background-color': 'black',
-      'color': 'white'
-    };
+  $scope.lyftEstimates;
+  $scope.uberEstimates;
+  $scope.startPosition;
 
-    $scope.selectedLyft = {
-      'background-color': '#ff00cc',
-      'color': 'white'
-    };
+  $scope.selectedUber = {
+    'background-color': 'black',
+    'color': 'white'
+  };
 
-    // LYFT
-    // Request token prior to making GET requests to Lyft API
-    LyftAuth.getLyftToken().then(function(token) {
+  $scope.selectedLyft = {
+    'background-color': '#ff00cc',
+    'color': 'white'
+  };
 
-      LyftDetails.getLyftEstimates(null, token.access_token).then(function(value) {
-        console.log(value.cost_estimates);
-        $scope.lyftEstimates = value.cost_estimates;
-      });
+  $scope.startPosition = JSON.parse($window.startPosition);
 
-      LyftDetails.getLyftEta(null, token.access_token).then(function(value) {
-        // console.log(value.eta_estimates);
+  // LYFT
+  // Request token prior to making GET requests to Lyft API
+  LyftAuth.getLyftToken().then(function(token) {
 
-        $scope.selectedLyft.ride = $scope.lyftEstimates[2];
+    LyftDetails.getLyftEstimates($scope.startPosition, token.access_token).then(function(value) {
+      $scope.lyftEstimates = value.cost_estimates;
+    });
 
-        // ADD ETA to Lyft Estimates
-        $scope.lyftEstimates.forEach(function(ride, index) {
-          ride.eta_seconds = value.eta_estimates[index].eta_seconds;
-        });
+    LyftDetails.getLyftEta($scope.startPosition, token.access_token).then(function(value) {
 
+      $scope.selectedLyft.ride = $scope.lyftEstimates[2];
+
+      // ADD ETA to Lyft Estimates
+      $scope.lyftEstimates.forEach(function(ride, index) {
+        ride.eta_seconds = value.eta_estimates[index].eta_seconds;
       });
 
     });
 
-    // UBER
-    UberDetails.getUberPriceEstimates(null).then(function(value) {
-      // console.log(value.prices);
-      $scope.uberEstimates = value.prices;
+  });
 
-      UberDetails.getUberTimeEstimates(null).then(function(value) {
-        // console.log(value.times);
-        $scope.selectedUber.ride = $scope.uberEstimates[0];
+  // UBER
+  UberDetails.getUberPriceEstimates($scope.startPosition).then(function(value) {
+    $scope.uberEstimates = value.prices;
 
-        $scope.uberEstimates.forEach(function(ride, index) {
-          ride.eta_seconds = value.times[index].estimate;
-        });
+    UberDetails.getUberTimeEstimates($scope.startPosition).then(function(value) {
+      $scope.selectedUber.ride = $scope.uberEstimates[0];
 
-
+      $scope.uberEstimates.forEach(function(ride, index) {
+        ride.eta_seconds = value.times[index].estimate;
       });
+
+
     });
+  });
  
 })
 
-.controller('ChatsCtrl', function($scope, NgMap) {
+.controller('ChatsCtrl', function($scope, $window, NgMap) {
 
 var options = {enableHighAccuracy: true};
 
 // this will be used later
 navigator.geolocation.getCurrentPosition(function(pos) {
                 $scope.position = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-                console.log(JSON.stringify($scope.position));
+                // Add start position to window object
+                $window.startPosition = JSON.stringify($scope.position);
+                // console.log(JSON.stringify($scope.position));
             },
             function(error) {
                 alert('Unable to get location: ' + error.message);
@@ -88,8 +97,9 @@ navigator.geolocation.getCurrentPosition(function(pos) {
   };
 })
 
-.controller('MainCtrl', function ($scope) {
+.controller('MainCtrl', function ($scope, $window) {
     $scope.place = null;
+    $window.endposition = {};
 
     $scope.myPlaces = [
         buildGooglePlacesResult({
@@ -141,8 +151,14 @@ navigator.geolocation.getCurrentPosition(function(pos) {
             ],
             geometry: {
                 location: {
-                    lat: function () { return config.location.latitude },
-                    lng: function () { return config.location.longitude }
+                    lat: function () {
+                      $window.endposition.lat = config.location.latitude;
+                      return config.location.latitude;
+                    },
+                    lng: function () {
+                      $window.endposition.lng = config.location.longitude;
+                      return config.location.longitude;
+                    }
                 }
             }
         };
