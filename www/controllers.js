@@ -116,7 +116,6 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
 
 .controller('MainCtrl', function ($scope, $window) {
     $scope.place = null;
-    $window.endposition = {};
 
     $scope.myPlaces = [
         buildGooglePlacesResult({
@@ -168,14 +167,8 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
             ],
             geometry: {
                 location: {
-                    lat: function () {
-                      $window.endposition.lat = config.location.latitude;
-                      return config.location.latitude;
-                    },
-                    lng: function () {
-                      $window.endposition.lng = config.location.longitude;
-                      return config.location.longitude;
-                    }
+                  lat: function () { return config.location.latitude },
+                  lng: function () { return config.location.longitude }
                 }
             }
         };
