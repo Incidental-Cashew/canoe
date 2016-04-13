@@ -46,7 +46,24 @@ angular.module('canoe.lyftServices', [])
     });
   };
 
-  var getLyftEstimates = function(userData, token) {
+  // var getLyftEstimates = function(userData, token) {
+  //   return $http({
+  //     method: 'GET',
+  //     url: 'https://api.lyft.com/v1/cost',
+  //     headers: {
+  //       authorization: 'bearer ' + token
+  //     },
+  //     params: {
+  //       start_lat: 37.783708,
+  //       start_lng: -122.4177484,
+  //       end_lat: 37.711147,
+  //       end_lng: -122.4507667
+  //     }
+  //   }).then(function(response) {
+  //     return response.data;
+  //   });
+  // };
+  var getLyftEstimates = function(startData, token) {
     return $http({
       method: 'GET',
       url: 'https://api.lyft.com/v1/cost',
@@ -54,8 +71,8 @@ angular.module('canoe.lyftServices', [])
         authorization: 'bearer ' + token
       },
       params: {
-        start_lat: 37.783708,
-        start_lng: -122.4177484,
+        start_lat: startData.lat,
+        start_lng: startData.lng,
         end_lat: 37.711147,
         end_lng: -122.4507667
       }
@@ -64,7 +81,22 @@ angular.module('canoe.lyftServices', [])
     });
   };
 
-  var getLyftEta = function(userData, token) {
+  // var getLyftEta = function(userData, token) {
+  //   return $http({
+  //     method: 'GET',
+  //     url: 'https://api.lyft.com/v1/eta',
+  //     headers: {
+  //       authorization: 'bearer ' + token
+  //     },
+  //     params: {
+  //       lat: 37.783708,
+  //       lng: -122.4177484
+  //     }
+  //   }).then(function(response) {
+  //     return response.data;
+  //   })
+  // };
+  var getLyftEta = function(startData, token) {
     return $http({
       method: 'GET',
       url: 'https://api.lyft.com/v1/eta',
@@ -72,8 +104,8 @@ angular.module('canoe.lyftServices', [])
         authorization: 'bearer ' + token
       },
       params: {
-        lat: 37.783708,
-        lng: -122.4177484
+        lat: startData.lat,
+        lng: startData.lng
       }
     }).then(function(response) {
       return response.data;

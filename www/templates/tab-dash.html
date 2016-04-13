@@ -1,34 +1,43 @@
-<ion-view view-title="Dashboard">
+<ion-view cache-view="false" view-title="Dashboard" ng-controller='DashCtrl'>
   <ion-content class="padding">
     <h2>Canoe</h2>
 
-    <table style="width:100%">
-    <tr>
-      <td>Ride</td>
-      <td>Cost Max</td>
-      <td>Cost Min</td>
-      <td>Distance</td>
-      <td>Trip Duration</td>
-      <td>ETA</td>   
-    </tr>
+    <div class="list">
 
-    <tr ng-repeat='est in lyftEstimates'>
-      <td>{{est.display_name}}</td>
-      <td>{{est.estimated_cost_cents_max / 100 | currency}}</td>
-      <td>{{est.estimated_cost_cents_min / 100 | currency}}</td>
-      <td>{{est.estimated_distance_miles + ' miles'}}</td>
-      <td>{{est.estimated_duration_seconds | secondsToMinutes}}</td>
-      <td>{{est.eta_seconds | secondsToMinutes}}</td>
-    </tr>
+      <label ng-style='selectedUber' class="item item-input item-select">
+        <div ng-style='selectedUber' class="input-label">Uber Ride Type:</div>
+        <select ng-style='selectedUber' ng-model='selectedUber.ride' ng-options='est.localized_display_name for est in uberEstimates'>
+        </select>
+      </label>
 
-    <tr ng-repeat='est in uberEstimates'>
-      <td>{{est.localized_display_name}}</td>
-      <td>{{est.high_estimate | currency}}</td>
-      <td>{{est.minimum | currency}}</td>
-      <td>{{est.distance + ' miles'}}</td>
-      <td>{{est.duration | secondsToMinutes}}</td>   
-    </tr>
-    </table>
+      <label ng-style='selectedLyft' class="item item-input item-select">
+        <div ng-style='selectedLyft' class="input-label">Lyft Ride Type:</div>
+        <select ng-style='selectedLyft' ng-model='selectedLyft.ride' ng-init='selectedLyft.ride = selectedLyft.ride || lyftEstimates[0]' ng-options='est.display_name for est in lyftEstimates'>
+        </select>
+      </label>
+
+    </div>
+
+    <div class="row">
+      <div class="col">Ride</div>
+      <div class="col">Cost Min</div>
+      <div class="col">Cost Max</div>
+      <div class="col">ETA</div>
+    </div>
+
+    <div class="row">
+      <div class="col">{{selectedUber.ride.localized_display_name}}</div>
+      <div class="col">{{(selectedUber.ride.low_estimate | currency) || 'N/A'}}</div>
+      <div class="col">{{(selectedUber.ride.high_estimate | currency) || 'N/A'}}</div>
+      <div class="col">{{selectedUber.ride.eta_seconds | secondsToMinutes}}</div>
+    </div>
+
+    <div class="row">
+      <div class="col">{{selectedLyft.ride.display_name}}</div>
+      <div class="col">{{selectedLyft.ride.estimated_cost_cents_min / 100 | currency}}</div>
+      <div class="col">{{selectedLyft.ride.estimated_cost_cents_max / 100 | currency}}</div>
+      <div class="col">{{selectedLyft.ride.eta_seconds | secondsToMinutes}}</div>
+    </div>
 
   </ion-content>
 </ion-view>

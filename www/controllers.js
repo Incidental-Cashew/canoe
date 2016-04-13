@@ -6,49 +6,80 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
     return minutes + 'min';
   }
 }])
-.controller('ChatsCtrl', function($scope, NgMap) {
- var geocoder = new google.maps.Geocoder;
-var options = {enableHighAccuracy: true};
 
-// this will be used later
-navigator.geolocation.getCurrentPosition(function(pos) {
-  $scope.position = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-  console.log(JSON.stringify($scope.position));
-  geocoder.geocode({'location': $scope.position}, function(result, status){
-      $scope.geodecoded = result[0].formatted_address.slice(0,-30);
+.controller('ChatsCtrl', function($scope, $window, NgMap) {
+  var geocoder = new google.maps.Geocoder;
+  var options = {enableHighAccuracy: true};
+
+  // this will be used later
+  navigator.geolocation.getCurrentPosition(function(pos) {
+    $scope.position = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+    
+    // Add start position to window object
+    $window.startPosition = JSON.stringify($scope.position);
+    console.log(JSON.stringify($scope.position));
+    geocoder.geocode({'location': $scope.position}, function(result, status){
+        $scope.geodecoded = result[0].formatted_address.slice(0,-30);
+    });
+
+  });
+})
+
+.controller('DashCtrl', function($scope, $window, $state, $stateParams, LyftAuth, LyftDetails, UberDetails) {
+
+  console.log('DASH CONTROLLER');
+
+  $scope.lyftEstimates;
+  $scope.uberEstimates;
+  $scope.startPosition;
+
+  $scope.selectedUber = {
+    'background-color': 'black',
+    'color': 'white'
+  };
+
+  $scope.selectedLyft = {
+    'background-color': '#ff00cc',
+    'color': 'white'
+  };
+
+  $scope.startPosition = JSON.parse($window.startPosition);
+
+  // LYFT
+  // Request token prior to making GET requests to Lyft API
+  LyftAuth.getLyftToken().then(function(token) {
+
+    LyftDetails.getLyftEstimates($scope.startPosition, token.access_token).then(function(value) {
+      $scope.lyftEstimates = value.cost_estimates;
+    });
+
+    LyftDetails.getLyftEta($scope.startPosition, token.access_token).then(function(value) {
+
+      $scope.selectedLyft.ride = $scope.lyftEstimates[2];
+
+      // ADD ETA to Lyft Estimates
+      $scope.lyftEstimates.forEach(function(ride, index) {
+        ride.eta_seconds = value.eta_estimates[index].eta_seconds;
+      });
+
+    });
+
   });
 
- });
-})
-.controller('DashCtrl', function($scope, LyftAuth, LyftDetails, UberDetails) {
+  // UBER
+  UberDetails.getUberPriceEstimates($scope.startPosition).then(function(value) {
+    $scope.uberEstimates = value.prices;
 
-    $scope.lyftEstimates;
-    $scope.uberEstimates;
+    UberDetails.getUberTimeEstimates($scope.startPosition).then(function(value) {
+      $scope.selectedUber.ride = $scope.uberEstimates[0];
 
-    // LYFT
-    // Request token prior to making GET requests to Lyft API
-    LyftAuth.getLyftToken().then(function(token) {
-
-      LyftDetails.getLyftEstimates(null, token.access_token).then(function(value) {
-        console.log(value.cost_estimates);
-        $scope.lyftEstimates = value.cost_estimates;
-      });
-
-      LyftDetails.getLyftEta(null, token.access_token).then(function(value) {
-        console.log(value.eta_estimates);
-
-        // ADD ETA to Lyft Estimates
-        // $scope.lyftEstimates.forEach(function(ride, index) {
-        //   ride.eta_seconds = value.eta_estimates[index].eta_seconds;
-        // });
+      $scope.uberEstimates.forEach(function(ride, index) {
+        ride.eta_seconds = value.times[index].estimate;
       });
     });
-
-    // UBER
-    UberDetails.getUberPriceEstimates(null).then(function(value) {
-      $scope.uberEstimates = value.prices;
-    });
+  });
 })
+
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
   $scope.chat = Chats.get($stateParams.chatId);
@@ -83,7 +114,7 @@ navigator.geolocation.getCurrentPosition(function(pos) {
   });
 })
 
-.controller('MainCtrl', function ($scope) {
+.controller('MainCtrl', function ($scope, $window) {
     $scope.place = null;
 
     $scope.myPlaces = [
@@ -136,8 +167,8 @@ navigator.geolocation.getCurrentPosition(function(pos) {
             ],
             geometry: {
                 location: {
-                    lat: function () { return config.location.latitude },
-                    lng: function () { return config.location.longitude }
+                  lat: function () { return config.location.latitude },
+                  lng: function () { return config.location.longitude }
                 }
             }
         };
