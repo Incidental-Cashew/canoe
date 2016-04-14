@@ -212,10 +212,10 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
   function checkAuthenticated() {
     // check to see if $window.localStorage has both uberBearer and lyftBearer;
     if ($window.localStorage.uberBearer && $window.localStorage.lyftBearer) {
-      $state.go('map');
+      $state.go('tab.chats');
     };
   };
   checkAuthenticated();
 
-  
+
 });
