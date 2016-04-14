@@ -5,19 +5,34 @@ angular.module('canoe.lyftServices', [])
 
   var postman = 'Basic T1RheS12M2RjMFJmOmYwZlFfYlBwbTFYV0M2N0k0Yzg2TldvazRVN2pDaXpj';
 
-  var getLyftToken = function(authCode) {
+  var getLyftToken = function() {
     return $http({
       url: 'https://api.lyft.com/oauth/token',
       method: 'POST',
       headers: {
         'content-type': 'application/json',
-        // authorization: postman
+        Authorization: postman
+      },
+      data: {
+        grant_type: 'client_credentials',
+        scope: 'public'
+      }
+    }).then(function(res) {
+      console.log('TOKEN: ', res.data.access_token);
+      return res.data;
+    });
+  };  
+
+  var getUserLyftToken = function(authCode) {
+    return $http({
+      url: 'https://api.lyft.com/oauth/token',
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
         Authorization: 'Basic WFlhcmM4MDMwZ1lOOjloamM2SmxlNTYzaGdlU1JDQ1NPdW85OTNmeTdFWEZM'
       },
       data: {
-        // grant_type: 'client_credentials',
         grant_type: 'authorization_code',
-        // scope: 'public'
         code: authCode
       }
     }).then(function(res) {
@@ -26,7 +41,11 @@ angular.module('canoe.lyftServices', [])
     });
   };
 
-  return {getLyftToken: getLyftToken};
+
+  return {
+    getLyftToken: getLyftToken,
+    getUserLyftToken: getUserLyftToken
+  };
 })
 
 .factory('LyftDetails', function($http) {

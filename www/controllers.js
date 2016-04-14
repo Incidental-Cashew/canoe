@@ -47,13 +47,13 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
 
   // LYFT
   // Request token prior to making GET requests to Lyft API
-  LyftAuth.getLyftToken().then(function(token) {
+  LyftAuth.getLyftToken().then(function() {
 
-    LyftDetails.getLyftEstimates($scope.startPosition, token.access_token).then(function(value) {
+    LyftDetails.getLyftEstimates($scope.startPosition, $window.localStorage.lyftBearer).then(function(value) {
       $scope.lyftEstimates = value.cost_estimates;
     });
 
-    LyftDetails.getLyftEta($scope.startPosition, token.access_token).then(function(value) {
+    LyftDetails.getLyftEta($scope.startPosition, $window.localStorage.lyftBearer).then(function(value) {
 
       $scope.selectedLyft.ride = $scope.lyftEstimates[2];
 
@@ -190,7 +190,7 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
     checkAuthenticated();
   });
 
-  LyftAuth.getLyftToken(getParameterByName('code')).then(function(token) {
+  LyftAuth.getUserLyftToken(getParameterByName('code')).then(function(token) {
     $scope.lyftBearer = token.access_token;
     $scope.lyftRefresh = token.refresh_token;
     $window.localStorage.lyftBearer = $scope.lyftBearer;
