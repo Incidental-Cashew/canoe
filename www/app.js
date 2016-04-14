@@ -8,6 +8,7 @@
 angular.module('canoe', [
   'canoe.lyftServices',
   'canoe.uberServices',
+  'canoe.locationServices',
   'canoe.controllers',
   'canoe.services',
   'ionic'
