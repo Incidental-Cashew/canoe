@@ -53,6 +53,19 @@ angular.module('canoe', [
 
   // Each tab has its own nav history stack:
 
+  .state('login', {
+    url: '',
+    templateUrl: 'templates/login.html',
+    controller: 'LoginCtrl'
+  })
+
+  // Required to properly redirect after authorizing with UBER
+  .state('login2', {
+    url: '/login',
+    templateUrl: 'templates/login.html',
+    controller: 'LoginCtrl'
+  })
+
   .state('tab.dash', {
     url: '/dash',
     views: {
@@ -93,6 +106,6 @@ angular.module('canoe', [
   });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/dash');
+  $urlRouterProvider.otherwise('login');
 
 });

@@ -154,7 +154,7 @@ angular.module('canoe.uberServices', [])
         client_secret: 'JUNTb5H7EVlifUuHkpP3XJpyZvCnfsUQvgaJllvG',
         client_id: 'mXeLa2XvUkhXEl8uTeqYTarmbP7aUmQy',
         grant_type: 'authorization_code',
-        redirect_uri: 'http://localhost:8000',
+        redirect_uri: 'http://localhost:8100',
         code: authCode,
       }
     }).then(function(res) {

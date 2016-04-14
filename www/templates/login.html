@@ -1,0 +1,53 @@
+<ion-view>
+  <ion-content class="padding" style="background-color: orange">
+    
+    <img src="../img/CANOE.png" style="display: block; margin: auto; margin-top: 3em">
+    <a ng-hide="uberAuthenticated" class="uberLogin" 
+    style="
+    margin-top: 16em;
+    text-decoration: none;
+    position: absolute;
+    top: calc(50% - 30px);
+    right: calc(50% - 115px);
+    width: 230px;
+    height: 60px;
+    /*background-image: -webkit-linear-gradient(bottom, rgba(0,0,0,.075), rgba(255,255,255,.045));*/
+    background-color: black;
+    background-image: linear-gradient(to top, rgba(0,0,0,.075), rgba(255,255,255,.045));
+      box-shadow: inset 0 -1px 0 rgba(0,0,0,.09),inset 0 1px 0 rgba(255,255,255,.04), 0 0 1px rgba(0,0,0,.3), 0 0 10px rgba(0,0,0,.1);
+    border-radius: 100px;
+    /*color: rgba(255,255,255,.9);*/
+    color: white;
+    line-height: 60px;
+    text-align: center;
+    letter-spacing: 5px;
+    overflow: hidden;
+    transition: all .3s cubic-bezier(.67,.13,.1,.81), transform .15s cubic-bezier(.67,.13,.1,.81);" 
+    href="https://login.uber.com/oauth/v2/authorize?client_id=mXeLa2XvUkhXEl8uTeqYTarmbP7aUmQy&response_type=code&redirect_uri=http://localhost:8100">
+      UBER
+    </a>
+
+    <a ng-hide="lyftAuthenticated" class="uberLogin" 
+    style="
+    margin-top: 22em;
+    text-decoration: none;
+    position: absolute;
+      top: calc(50% - 30px);
+      right: calc(50% - 115px);
+      width: 230px;
+      height: 60px;
+      /*background-image: -webkit-linear-gradient(bottom, rgba(0,0,0,.075), rgba(255,255,255,.045));*/
+      background-color: #FF00CC;
+      background-image: linear-gradient(to top, rgba(0,0,0,.075), rgba(255,255,255,.045));
+        box-shadow: inset 0 -1px 0 rgba(0,0,0,.09),inset 0 1px 0 rgba(255,255,255,.04), 0 0 1px rgba(0,0,0,.3), 0 0 10px rgba(0,0,0,.1);
+      border-radius: 100px;
+      /*color: rgba(255,255,255,.9);*/
+      color: white;
+      line-height: 60px;
+      text-align: center;
+      letter-spacing: 5px;
+      overflow: hidden;
+      transition: all .3s cubic-bezier(.67,.13,.1,.81), transform .15s cubic-bezier(.67,.13,.1,.81);"
+    href="https://api.lyft.com/oauth/authorize?client_id=XYarc8030gYN&response_type=code&scope=public+rides.read+offline+rides.request&state=http://localhost:8100">LYFT</a>
+  </ion-content>
+</ion-view>
