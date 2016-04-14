@@ -7,7 +7,7 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
   };
 }])
 
-.controller('ChatsCtrl', function($scope, $window, NgMap, LocationDetails) {
+.controller('ChatsCtrl', function($scope, NgMap, LocationDetails) {
   var geocoder = new google.maps.Geocoder;
   var options = {enableHighAccuracy: true};
 
@@ -20,7 +20,15 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
 
 })
 
-.controller('DashCtrl', function($scope, $window, LyftAuth, LyftDetails, UberDetails, LocationDetails) {
+.controller('DashCtrl', function($scope, $window, $state, LyftAuth, LyftDetails, UberDetails, LocationDetails) {
+
+  // USER AUTH COMMENTING OUT FOR TESTING
+  // (function checkAuthenticated() {
+  //   // check to see if $window.localStorage has both uberBearer and lyftBearer;
+  //   if (!$window.localStorage.uberBearer || !$window.localStorage.lyftBearer) {
+  //     $state.go('login');
+  //   };
+  // })();
 
   console.log('DASH CONTROLLER');
 
@@ -114,68 +122,107 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
 })
 
 .controller('MainCtrl', function ($scope, $window) {
-    $scope.place = null;
+  $scope.place = null;
 
-    $scope.myPlaces = [
-        buildGooglePlacesResult({
-            address: {
-                street: 'International Airport - T1',
-                suburb: 'Sydney',
-                state: 'NSW'
-            },
-            location: { latitude: -33.936722, longitude: 151.164266 }
-        }),
-        buildGooglePlacesResult({
-            address: {
-                street: 'Domestic Airport - T2',
-                suburb: 'Sydney',
-                state: 'NSW'
-            },
-            location: { latitude: -33.933617, longitude: 151.181630 }
-        }),
-        buildGooglePlacesResult({
-            address: {
-                street: 'Domestic Airport - T3',
-                suburb: 'Sydney',
-                state: 'NSW'
-            },
-            location: { latitude: -33.933076, longitude: 151.181270 }
-        })
-    ];
+  $scope.myPlaces = [
+    buildGooglePlacesResult({
+      address: {
+        street: 'International Airport - T1',
+        suburb: 'Sydney',
+        state: 'NSW'
+      },
+      location: { latitude: -33.936722, longitude: 151.164266 }
+    }),
+    buildGooglePlacesResult({
+      address: {
+        street: 'Domestic Airport - T2',
+        suburb: 'Sydney',
+        state: 'NSW'
+      },
+      location: { latitude: -33.933617, longitude: 151.181630 }
+    }),
+    buildGooglePlacesResult({
+      address: {
+        street: 'Domestic Airport - T3',
+        suburb: 'Sydney',
+        state: 'NSW'
+      },
+      location: { latitude: -33.933076, longitude: 151.181270 }
+    })
+  ];
 
-    function buildGooglePlacesResult(config) {
-        // Build a synthetic google.maps.places.PlaceResult object
-        return {
-            formatted_address: config.address.street + ', ' + config.address.suburb + ', ' + config.address.state,
-            address_components: [
-                {
-                    long_name: config.address.street,
-                    short_name : config.address.street,
-                    types: [ 'route' ]
-                },
-                {
-                    long_name: config.address.suburb,
-                    short_name: config.address.suburb,
-                    types: [ 'locality' ]
-                },
-                {
-                    long_name: config.address.state,
-                    short_name: config.address.state,
-                    types: [ 'administrative_area_level_1' ]
-                }
-            ],
-            geometry: {
-                location: {
-                  lat: function () { return config.location.latitude },
-                  lng: function () { return config.location.longitude }
-                }
-            }
-        };
-    }
-  })
+  function buildGooglePlacesResult(config) {
+    // Build a synthetic google.maps.places.PlaceResult object
+    return {
+      formatted_address: config.address.street + ', ' + config.address.suburb + ', ' + config.address.state,
+      address_components: [
+        {
+          long_name: config.address.street,
+          short_name : config.address.street,
+          types: [ 'route' ]
+        },
+        {
+          long_name: config.address.suburb,
+          short_name: config.address.suburb,
+          types: [ 'locality' ]
+        },
+        {
+          long_name: config.address.state,
+          short_name: config.address.state,
+          types: [ 'administrative_area_level_1' ]
+        }
+    ],
+    geometry: {
+        location: {
+          lat: function () { return config.location.latitude },
+          lng: function () { return config.location.longitude }
+        }
+      }
+    };
+  }
+})
+
+.controller('LoginCtrl', function($scope, $window, $state, UberAuth, LyftAuth) {
+  $window.uberAuthenticated = false;
+  $window.lyftAuthenticated = false;
+
+  $scope.uberAuthenticated = !!$window.localStorage.uberBearer;
+  $scope.lyftAuthenticated = !!$window.localStorage.lyftBearer;
+
+  UberAuth.getUberToken(getParameterByName('code')).then(function(token) {
+    // $scope.uberBearer = token.access_token;
+    // $scope.uberRefresh = token.refresh_token;
+    $window.localStorage.uberBearer = token.access_token;
+    $scope.uberAuthenticated = true;
+    checkAuthenticated();
+  });
+
+  LyftAuth.getUserLyftToken(getParameterByName('code')).then(function(token) {
+    $scope.lyftBearer = token.access_token;
+    $scope.lyftRefresh = token.refresh_token;
+    $window.localStorage.lyftBearer = $scope.lyftBearer;
+    $scope.lyftAuthenticated = true;
+    checkAuthenticated();
+  });
+
+  // Get value of parameters in url
+  function getParameterByName(name, url) {
+      if (!url) url = window.location.href;
+      name = name.replace(/[\[\]]/g, "\\$&");
+      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)", "i"),
+          results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, " "));
+  };
+
+  function checkAuthenticated() {
+    // check to see if $window.localStorage has both uberBearer and lyftBearer;
+    if ($window.localStorage.uberBearer && $window.localStorage.lyftBearer) {
+      $state.go('tab.chats');
+    };
+  };
+  checkAuthenticated();
 
 
-
-
-// controls the modal for setting a location/destination
-;
+});
