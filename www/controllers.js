@@ -4,36 +4,31 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
   return function(seconds) {
     var minutes = Math.floor((seconds / 60));
     return minutes + 'min';
-  }
+  };
 }])
 
-.controller('ChatsCtrl', function($scope, $window, NgMap) {
-
+.controller('ChatsCtrl', function($scope, NgMap, LocationDetails) {
   var geocoder = new google.maps.Geocoder;
   var options = {enableHighAccuracy: true};
 
-  // this will be used later
-  navigator.geolocation.getCurrentPosition(function(pos) {
-    $scope.position = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-    
-    // Add start position to window object
-    $window.startPosition = JSON.stringify($scope.position);
-    console.log(JSON.stringify($scope.position));
-    geocoder.geocode({'location': $scope.position}, function(result, status){
-        $scope.geodecoded = result[0].formatted_address.slice(0,-30);
+  LocationDetails.getStartLocation(function() {
+    console.log(LocationDetails.startLocation);
+    geocoder.geocode({'location': LocationDetails.position}, function(result, status) {
+      $scope.geodecoded = result[0].formatted_address.slice(0,-30);
     });
-
   });
+
 })
 
-.controller('DashCtrl', function($scope, $window, $state, $stateParams, LyftAuth, LyftDetails, UberDetails) {
+.controller('DashCtrl', function($scope, $window, $state, LyftAuth, LyftDetails, UberDetails, LocationDetails) {
 
-  (function checkAuthenticated() {
-    // check to see if $window.localStorage has both uberBearer and lyftBearer;
-    if (!$window.localStorage.uberBearer || !$window.localStorage.lyftBearer) {
-      $state.go('login');
-    };
-  })();
+  // USER AUTH COMMENTING OUT FOR TESTING
+  // (function checkAuthenticated() {
+  //   // check to see if $window.localStorage has both uberBearer and lyftBearer;
+  //   if (!$window.localStorage.uberBearer || !$window.localStorage.lyftBearer) {
+  //     $state.go('login');
+  //   };
+  // })();
 
   console.log('DASH CONTROLLER');
 
@@ -51,41 +46,45 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
     'color': 'white'
   };
 
-  $scope.startPosition = JSON.parse($window.startPosition);
+  if (LocationDetails.startLocation) {
+    $scope.startPosition = JSON.parse(LocationDetails.startLocation);
+    // LYFT
+    // Request token prior to making GET requests to Lyft API
+    LyftAuth.getLyftToken().then(function(token) {
 
-  // LYFT
-  // Request token prior to making GET requests to Lyft API
-  LyftAuth.getLyftToken().then(function(token) {
+      LyftDetails.getLyftEstimates($scope.startPosition, token.access_token).then(function(value) {
+        console.log(value);
+        $scope.lyftEstimates = value.cost_estimates;
+      });
 
-    LyftDetails.getLyftEstimates($scope.startPosition, token.access_token).then(function(value) {
-      $scope.lyftEstimates = value.cost_estimates;
-    });
+      LyftDetails.getLyftEta($scope.startPosition, token.access_token).then(function(value) {
 
-    LyftDetails.getLyftEta($scope.startPosition, token.access_token).then(function(value) {
+        $scope.selectedLyft.ride = $scope.lyftEstimates[1];
 
-      $scope.selectedLyft.ride = $scope.lyftEstimates[2];
+        // ADD ETA to Lyft Estimates
+        $scope.lyftEstimates.forEach(function(ride, index) {
+          ride.eta_seconds = value.eta_estimates[index].eta_seconds;
+        });
 
-      // ADD ETA to Lyft Estimates
-      $scope.lyftEstimates.forEach(function(ride, index) {
-        ride.eta_seconds = value.eta_estimates[index].eta_seconds;
       });
 
     });
 
-  });
+    // UBER
+    UberDetails.getUberPriceEstimates($scope.startPosition).then(function(value) {
+      $scope.uberEstimates = value.prices;
 
-  // UBER
-  UberDetails.getUberPriceEstimates($scope.startPosition).then(function(value) {
-    $scope.uberEstimates = value.prices;
+      UberDetails.getUberTimeEstimates($scope.startPosition).then(function(value) {
+        $scope.selectedUber.ride = $scope.uberEstimates[0];
 
-    UberDetails.getUberTimeEstimates($scope.startPosition).then(function(value) {
-      $scope.selectedUber.ride = $scope.uberEstimates[0];
-
-      $scope.uberEstimates.forEach(function(ride, index) {
-        ride.eta_seconds = value.times[index].estimate;
+        $scope.uberEstimates.forEach(function(ride, index) {
+          if (value.times[index]) {
+            ride.eta_seconds = value.times[index].estimate;
+          }
+        });
       });
     });
-  });
+  }
 })
 
 
