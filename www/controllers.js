@@ -176,6 +176,44 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
 })
 
 .controller('LoginCtrl', function($scope, $window, $state, UberAuth, LyftAuth) {
-  
+  $window.uberAuthenticated = false;
+  $window.lyftAuthenticated = false;
 
+  $scope.uberAuthenticated = !!$window.localStorage.uberBearer;
+  $scope.lyftAuthenticated = !!$window.localStorage.lyftBearer;
+
+  UberAuth.getUberToken(getParameterByName('code')).then(function(token) {
+    // $scope.uberBearer = token.access_token;
+    // $scope.uberRefresh = token.refresh_token;
+    $window.localStorage.uberBearer = token.access_token;
+    $scope.uberAuthenticated = true;
+    checkAuthenticated();
+  });
+
+  LyftAuth.getLyftToken(getParameterByName('code')).then(function(token) {
+    $scope.lyftBearer = token.access_token;
+    $scope.lyftRefresh = token.refresh_token;
+    $window.localStorage.lyftBearer = $scope.lyftBearer;
+    $scope.lyftAuthenticated = true;
+    checkAuthenticated();
+  });
+
+  // Get value of parameters in url
+  function getParameterByName(name, url) {
+      if (!url) url = window.location.href;
+      name = name.replace(/[\[\]]/g, "\\$&");
+      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)", "i"),
+          results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, " "));
+  };
+
+  function checkAuthenticated() {
+    // check to see if $window.localStorage has both uberBearer and lyftBearer;
+    if ($window.localStorage.uberBearer && $window.localStorage.lyftBearer) {
+      $state.go('map');
+    };
+  };
+  checkAuthenticated();
 });
