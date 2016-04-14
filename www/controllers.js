@@ -8,6 +8,7 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
 }])
 
 .controller('ChatsCtrl', function($scope, $window, NgMap) {
+
   var geocoder = new google.maps.Geocoder;
   var options = {enableHighAccuracy: true};
 
@@ -26,6 +27,13 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
 })
 
 .controller('DashCtrl', function($scope, $window, $state, $stateParams, LyftAuth, LyftDetails, UberDetails) {
+
+  (function checkAuthenticated() {
+    // check to see if $window.localStorage has both uberBearer and lyftBearer;
+    if (!$window.localStorage.uberBearer || !$window.localStorage.lyftBearer) {
+      $state.go('login');
+    };
+  })();
 
   console.log('DASH CONTROLLER');
 
@@ -47,13 +55,13 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
 
   // LYFT
   // Request token prior to making GET requests to Lyft API
-  LyftAuth.getLyftToken().then(function() {
+  LyftAuth.getLyftToken().then(function(token) {
 
-    LyftDetails.getLyftEstimates($scope.startPosition, $window.localStorage.lyftBearer).then(function(value) {
+    LyftDetails.getLyftEstimates($scope.startPosition, token.access_token).then(function(value) {
       $scope.lyftEstimates = value.cost_estimates;
     });
 
-    LyftDetails.getLyftEta($scope.startPosition, $window.localStorage.lyftBearer).then(function(value) {
+    LyftDetails.getLyftEta($scope.startPosition, token.access_token).then(function(value) {
 
       $scope.selectedLyft.ride = $scope.lyftEstimates[2];
 
