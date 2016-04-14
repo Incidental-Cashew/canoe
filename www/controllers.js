@@ -216,4 +216,6 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
     };
   };
   checkAuthenticated();
+
+  
 });

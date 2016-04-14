@@ -11,13 +11,14 @@ angular.module('canoe.lyftServices', [])
       method: 'POST',
       headers: {
         'content-type': 'application/json',
-        authorization: postman
+        // authorization: postman
+        Authorization: 'Basic WFlhcmM4MDMwZ1lOOjloamM2SmxlNTYzaGdlU1JDQ1NPdW85OTNmeTdFWEZM'
       },
       data: {
-        grant_type: 'client_credentials',
-        // grant_type: 'authorization_code',
-        scope: 'public'
-        // code: authCode
+        // grant_type: 'client_credentials',
+        grant_type: 'authorization_code',
+        // scope: 'public'
+        code: authCode
       }
     }).then(function(res) {
       console.log('TOKEN: ', res.data.access_token);
