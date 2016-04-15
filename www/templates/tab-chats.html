@@ -7,12 +7,12 @@
        <marker idkey='1' position="current" animation="Animation.BOUNCE" centered="true" ></marker>
        <div ng-controller="ModalCtrl">
          <ion-list style="position:absolute; z-index:3">
-          <ion-item ng-click="" >
-            address from goes here
-          </ion-item>
-          <ion-item ng-click="">
-            address to goes here
-          </ion-item>
+         <form class="form" ng-click="">
+             <input class="form-control" g-places-autocomplete custom-places="myPlaces" ng-model="place" ng-click="" />
+         </form>
+         <form class="form" ng-click="">
+             <input class="form-control" g-places-autocomplete custom-places="myPlaces" ng-model="place" ng-click="" />
+         </form>
         </ion-list>
          <button class="button button-block button-light" style="position:absolute; padding-left:10px; margin-top:490px;z-index:2" ng-click="openModal(geodecoded)">
            <p>{{geodecoded}}</p>
