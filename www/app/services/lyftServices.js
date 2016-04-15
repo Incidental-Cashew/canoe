@@ -18,7 +18,7 @@ angular.module('canoe.lyftServices', [])
         scope: 'public'
       }
     }).then(function(res) {
-      console.log('TOKEN: ', res.data.access_token);
+      // console.log('TOKEN: ', res.data.access_token);
       return res.data;
     });
   };  
@@ -53,7 +53,6 @@ angular.module('canoe.lyftServices', [])
     return $http({
       method: 'GET',
       url: 'https://api.lyft.com/v1/drivers',
-      method: 'GET',
       headers: {
         authorization: 'bearer ' + token
       },
@@ -129,7 +128,7 @@ angular.module('canoe.lyftServices', [])
       }
     }).then(function(response) {
       return response.data;
-    })
+    });
   };
 
   return {
@@ -137,5 +136,5 @@ angular.module('canoe.lyftServices', [])
     getLyftEta: getLyftEta,
     getLyftEstimates: getLyftEstimates,
   };
-})
+});
 

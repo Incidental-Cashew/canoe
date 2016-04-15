@@ -12,8 +12,6 @@ angular.module('canoe.locationServices', ['ngMap', 'google.places'])
         
         service.position = position;
         service.startLocation = JSON.stringify(position);
-        // console.log('FROM SERVICE', service.startlocation);
-        $rootScope.$broadcast( 'location.update' );
         callback();
       });
     }
