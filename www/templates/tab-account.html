@@ -1,15 +1,10 @@
 <ion-view view-title="Account">
   <ion-content>
-<!--     <ion-list>
-    <ion-toggle  ng-model="settings.enableFriends">
-        Enable Friends
-    </ion-toggle>
-    </ion-list> -->
     <div ng-controller="MainCtrl" class="container">
         <div class="row">
             <div class="col-md-12">
                 <form class="form" ng-click="">
-                    <input class="form-control" g-places-autocomplete custom-places="myPlaces" ng-model="place" ng-click="" />
+                    <input class="form-control" g-places-autocomplete custom-places="myPlaces" ng-model="place" ng-change="getEndLocation(place.geometry.location)" ng-click="" />
                 </form>
 
                 <h5>Result:</h5>

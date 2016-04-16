@@ -8,6 +8,7 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
 }])
 
 .controller('ChatsCtrl', function($scope, NgMap, LocationDetails) {
+
   var geocoder = new google.maps.Geocoder;
   var options = {enableHighAccuracy: true};
 
@@ -35,6 +36,7 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
   $scope.lyftEstimates;
   $scope.uberEstimates;
   $scope.startPosition;
+  $scope.endPosition;
 
   $scope.selectedUber = {
     'background-color': 'black',
@@ -46,20 +48,21 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
     'color': 'white'
   };
 
-  if (LocationDetails.startLocation) {
+  if (LocationDetails.startLocation && LocationDetails.endLocation) {
     $scope.startPosition = JSON.parse(LocationDetails.startLocation);
+    $scope.endPosition = JSON.parse(LocationDetails.endLocation);
     // LYFT
     // Request token prior to making GET requests to Lyft API
     LyftAuth.getLyftToken().then(function(token) {
 
-      LyftDetails.getLyftEstimates($scope.startPosition, token.access_token).then(function(value) {
+      LyftDetails.getLyftEstimates($scope.startPosition, $scope.endPosition, token.access_token).then(function(value) {
         console.log(value);
         $scope.lyftEstimates = value.cost_estimates;
       });
 
       LyftDetails.getLyftEta($scope.startPosition, token.access_token).then(function(value) {
 
-        $scope.selectedLyft.ride = $scope.lyftEstimates[1];
+        $scope.selectedLyft.ride = $scope.lyftEstimates[$scope.lyftEstimates.length - 1];
 
         // ADD ETA to Lyft Estimates
         $scope.lyftEstimates.forEach(function(ride, index) {
@@ -71,10 +74,10 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
     });
 
     // UBER
-    UberDetails.getUberPriceEstimates($scope.startPosition).then(function(value) {
+    UberDetails.getUberPriceEstimates($scope.startPosition, $scope.endPosition).then(function(value) {
       $scope.uberEstimates = value.prices;
 
-      UberDetails.getUberTimeEstimates($scope.startPosition).then(function(value) {
+      UberDetails.getUberTimeEstimates($scope.startPosition, $scope.endPosition).then(function(value) {
         $scope.selectedUber.ride = $scope.uberEstimates[0];
 
         $scope.uberEstimates.forEach(function(ride, index) {
@@ -87,12 +90,11 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
   }
 })
 
-
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
   $scope.chat = Chats.get($stateParams.chatId);
 })
 
-.controller('ModalCtrl', function($scope, $ionicModal) {
+.controller('ModalCtrl', function($scope, $ionicModal, LocationDetails) {
   $ionicModal.fromTemplateUrl('./templates/searchModel.html', {
     scope: $scope,
     animation: 'slide-in-up'
@@ -119,37 +121,23 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
   $scope.$on('modal.removed', function() {
     // Execute action
   });
+
+
+  $scope.getEndLocation = function(location) {
+    LocationDetails.getEndLocation(location, function() {
+      console.log(LocationDetails.endLocation);
+    });
+  };
 })
 
-.controller('MainCtrl', function ($scope, $window) {
+.controller('MainCtrl', function ($scope, $window, LocationDetails) {
   $scope.place = null;
 
-  $scope.myPlaces = [
-    buildGooglePlacesResult({
-      address: {
-        street: 'International Airport - T1',
-        suburb: 'Sydney',
-        state: 'NSW'
-      },
-      location: { latitude: -33.936722, longitude: 151.164266 }
-    }),
-    buildGooglePlacesResult({
-      address: {
-        street: 'Domestic Airport - T2',
-        suburb: 'Sydney',
-        state: 'NSW'
-      },
-      location: { latitude: -33.933617, longitude: 151.181630 }
-    }),
-    buildGooglePlacesResult({
-      address: {
-        street: 'Domestic Airport - T3',
-        suburb: 'Sydney',
-        state: 'NSW'
-      },
-      location: { latitude: -33.933076, longitude: 151.181270 }
-    })
-  ];
+  $scope.getEndLocation = function(location) {
+    LocationDetails.getEndLocation(location, function() {
+      console.log(LocationDetails.endLocation);
+    });
+  };
 
   function buildGooglePlacesResult(config) {
     // Build a synthetic google.maps.places.PlaceResult object

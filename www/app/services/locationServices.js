@@ -5,6 +5,7 @@ angular.module('canoe.locationServices', ['ngMap', 'google.places'])
 
     startLocation: null,
     position: null,
+    endLocation: null,
 
     getStartLocation: function(callback) {
       navigator.geolocation.getCurrentPosition(function(pos) {
@@ -14,6 +15,10 @@ angular.module('canoe.locationServices', ['ngMap', 'google.places'])
         service.startLocation = JSON.stringify(position);
         callback();
       });
+    },
+    getEndLocation: function(position, callback) {
+      service.endLocation = JSON.stringify(position);
+      callback();
     }
   };
 
