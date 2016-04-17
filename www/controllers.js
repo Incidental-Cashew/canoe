@@ -14,8 +14,7 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
 
   LocationDetails.getStartLocation(function() {
     geocoder.geocode({'location': LocationDetails.position}, function(result, status) {
-      $scope.startPosition = LocationDetails.startLocation;
-      console.log('current location', $scope.startPosition);
+      console.log('current location', LocationDetails.startLocation);
       $scope.geodecoded = result[0].formatted_address;
     });
   });
@@ -50,6 +49,11 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
   if (LocationDetails.startLocation && LocationDetails.endLocation) {
     $scope.startPosition = JSON.parse(LocationDetails.startLocation);
     $scope.endPosition = JSON.parse(LocationDetails.endLocation);
+
+    console.log('DASH CONTROLLER');
+    console.log('Start: ', $scope.startPosition);
+    console.log('End: ', $scope.endPosition);
+
     // LYFT
     // Request token prior to making GET requests to Lyft API
     LyftAuth.getLyftToken().then(function(token) {
@@ -121,17 +125,16 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
   });
 
   $scope.getStartLocation = function(location) {
-    LocationDetails.getEndLocation(location, function() {
-      $scope.startPosition = LocationDetails.endLocation;
-      console.log('from', $scope.startPosition);
+    console.log('CHANGE START POSITION');
+    LocationDetails.changeStartLocation(location, function() {
+      console.log('from', LocationDetails.startLocation);
     });
   };
 
   $scope.getEndLocation = function(location) {
-    console.log(location);
+    console.log('CHANGE END POSITION');
     LocationDetails.getEndLocation(location, function() {
-      $scope.endPosition = LocationDetails.endLocation;
-      console.log('to', $scope.endPosition);
+      console.log('to', LocationDetails.endLocation);
     });
   };
 })

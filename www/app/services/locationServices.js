@@ -16,6 +16,10 @@ angular.module('canoe.locationServices', ['ngMap', 'google.places'])
         callback();
       });
     },
+    changeStartLocation: function(position, callback) {
+      service.startLocation = JSON.stringify(position);
+      callback();
+    },
     getEndLocation: function(position, callback) {
       service.endLocation = JSON.stringify(position);
       callback();
