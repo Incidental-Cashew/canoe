@@ -32,7 +32,14 @@
     "gulp-sass": "^2.0.4",
     "mongoose": "^4.4.11",
     "mongodb": "^2.1.16",
-    "gulp-rename": "^1.2.0"
+    "gulp-rename": "^1.2.0",
+    "karma": "^0.13.15",
+    "karma-chai": "^0.1.0",
+    "karma-mocha": "^0.2.1",
+    "karma-nyan-reporter": "0.0.43",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "karma-sinon": "^1.0.4",
+    "karma-unicorn-reporter": "^0.1.4"
   },
   "cordovaPlugins": [
     "cordova-plugin-device",

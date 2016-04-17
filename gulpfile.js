@@ -6,10 +6,18 @@ var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
+var KarmaServer = require('karma').Server;
 
 var paths = {
   sass: ['./scss/**/*.scss']
 };
+
+// Run our karma tests
+gulp.task('karma', function (done) {
+  new KarmaServer({
+    configFile: __dirname + '/karma.conf.js'
+  }, done).start();
+});
 
 gulp.task('default', ['sass']);
 
