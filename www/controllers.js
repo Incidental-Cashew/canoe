@@ -13,9 +13,9 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
   var options = {enableHighAccuracy: true};
 
   LocationDetails.getStartLocation(function() {
-    console.log(LocationDetails.startLocation);
     geocoder.geocode({'location': LocationDetails.position}, function(result, status) {
-      $scope.geodecoded = result[0].formatted_address.slice(0,-30);
+      console.log('current location', LocationDetails.startLocation);
+      $scope.geodecoded = result[0].formatted_address;
     });
   });
 
@@ -49,6 +49,11 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
   if (LocationDetails.startLocation && LocationDetails.endLocation) {
     $scope.startPosition = JSON.parse(LocationDetails.startLocation);
     $scope.endPosition = JSON.parse(LocationDetails.endLocation);
+
+    console.log('DASH CONTROLLER');
+    console.log('Start: ', $scope.startPosition);
+    console.log('End: ', $scope.endPosition);
+
     // LYFT
     // Request token prior to making GET requests to Lyft API
     LyftAuth.getLyftToken().then(function(token) {
@@ -119,10 +124,17 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
     // Execute action
   });
 
+  $scope.getStartLocation = function(location) {
+    console.log('CHANGE START POSITION');
+    LocationDetails.changeStartLocation(location, function() {
+      console.log('from', LocationDetails.startLocation);
+    });
+  };
 
   $scope.getEndLocation = function(location) {
+    console.log('CHANGE END POSITION');
     LocationDetails.getEndLocation(location, function() {
-      console.log(LocationDetails.endLocation);
+      console.log('to', LocationDetails.endLocation);
     });
   };
 })
@@ -130,11 +142,11 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
 .controller('MainCtrl', function ($scope, $window, LocationDetails) {
   $scope.place = null;
 
-  $scope.getEndLocation = function(location) {
-    LocationDetails.getEndLocation(location, function() {
-      console.log(LocationDetails.endLocation);
-    });
-  };
+  // $scope.getEndLocation = function(location) {
+  //   LocationDetails.getEndLocation(location, function() {
+  //     console.log(LocationDetails.endLocation);
+  //   });
+  // };
 
   function buildGooglePlacesResult(config) {
     // Build a synthetic google.maps.places.PlaceResult object
