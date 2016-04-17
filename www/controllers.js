@@ -13,9 +13,10 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
   var options = {enableHighAccuracy: true};
 
   LocationDetails.getStartLocation(function() {
-    console.log(LocationDetails.startLocation);
     geocoder.geocode({'location': LocationDetails.position}, function(result, status) {
-      $scope.geodecoded = result[0].formatted_address.slice(0,-30);
+      $scope.startPosition = LocationDetails.startLocation;
+      console.log('current location', $scope.startPosition);
+      $scope.geodecoded = result[0].formatted_address;
     });
   });
 
@@ -119,10 +120,18 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
     // Execute action
   });
 
+  $scope.getStartLocation = function(location) {
+    LocationDetails.getEndLocation(location, function() {
+      $scope.startPosition = LocationDetails.endLocation;
+      console.log('from', $scope.startPosition);
+    });
+  };
 
   $scope.getEndLocation = function(location) {
+    console.log(location);
     LocationDetails.getEndLocation(location, function() {
-      console.log(LocationDetails.endLocation);
+      $scope.endPosition = LocationDetails.endLocation;
+      console.log('to', $scope.endPosition);
     });
   };
 })
@@ -130,11 +139,11 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
 .controller('MainCtrl', function ($scope, $window, LocationDetails) {
   $scope.place = null;
 
-  $scope.getEndLocation = function(location) {
-    LocationDetails.getEndLocation(location, function() {
-      console.log(LocationDetails.endLocation);
-    });
-  };
+  // $scope.getEndLocation = function(location) {
+  //   LocationDetails.getEndLocation(location, function() {
+  //     console.log(LocationDetails.endLocation);
+  //   });
+  // };
 
   function buildGooglePlacesResult(config) {
     // Build a synthetic google.maps.places.PlaceResult object
