@@ -2,17 +2,17 @@ angular.module('canoe.uberServices', [])
 
 .factory('UberDetails', function($http) {
 
-  var getUberPriceEstimates = function(startData) {
+  var getUberPriceEstimates = function(startData, endpointData) {
     return $http({
       method: 'GET',      
       url: 'https://api.uber.com/v1/estimates/price',
       Authorization: 'Token 4SETeVarXmqjMneX0W7AlGgwjDmKuku7K7A6Ydqg',
       params: {
         server_token: '4SETeVarXmqjMneX0W7AlGgwjDmKuku7K7A6Ydqg',
-        start_latitude: startData.lat, //userData.startLat
-        start_longitude: startData.lng, //userData.startLong
-        end_latitude: 37.711147, //userData.endLat
-        end_longitude: -122.4507667 //userData.endLong
+        start_latitude: startData.lat,
+        start_longitude: startData.lng,
+        end_latitude: endpointData.lat,
+        end_longitude: endpointData.lng
       }
     }).then(function(res) {
       // do something with response
@@ -21,26 +21,7 @@ angular.module('canoe.uberServices', [])
     });
   };
 
-  // var getUberPriceEstimates = function(userData) {
-  //   return $http({
-  //     method: 'GET',      
-  //     url: 'https://api.uber.com/v1/estimates/price',
-  //     Authorization: 'Token 4SETeVarXmqjMneX0W7AlGgwjDmKuku7K7A6Ydqg',
-  //     params: {
-  //       server_token: '4SETeVarXmqjMneX0W7AlGgwjDmKuku7K7A6Ydqg',
-  //       start_latitude: 37.783708, //userData.startLat
-  //       start_longitude: -122.4177484, //userData.startLong
-  //       end_latitude: 37.711147, //userData.endLat
-  //       end_longitude: -122.4507667 //userData.endLong
-  //     }
-  //   }).then(function(res) {
-  //     // do something with response
-  //     // console.log(JSON.stringify(res.data));
-  //     return res.data;
-  //   });
-  // };
-
-  var getUberTimeEstimates = function(startData, bearer) {
+  var getUberTimeEstimates = function(startData, endpointData, bearer) {
     return $http({
       method: 'GET',
       url: 'https://api.uber.com/v1/estimates/time',
@@ -48,32 +29,14 @@ angular.module('canoe.uberServices', [])
         server_token: '4SETeVarXmqjMneX0W7AlGgwjDmKuku7K7A6Ydqg',
         start_latitude: startData.lat, //userData.startLat
         start_longitude: startData.lng, //userData.startLong
-        end_latitude: 37.711147, //userData.endLat
-        end_longitude: -122.4507667 //userData.endLong
+        end_latitude: endpointData.lat, //userData.endLat
+        end_longitude: endpointData.lng //userData.endLong
       }
     }).then(function(res) {
       // console.log(JSON.stringify(res.data));
       return res.data;
     });
   };
-
-  // var getUberTimeEstimates = function(userData, bearer) {
-  //   return $http({
-  //     method: 'GET',
-  //     url: 'https://api.uber.com/v1/estimates/time',
-  //     params: {
-  //       server_token: '4SETeVarXmqjMneX0W7AlGgwjDmKuku7K7A6Ydqg',
-  //       start_latitude: 37.783708, //userData.startLat
-  //       start_longitude: -122.4177484, //userData.startLong
-  //       end_latitude: 37.711147, //userData.endLat
-  //       end_longitude: -122.4507667 //userData.endLong
-  //     }
-  //   }).then(function(res) {
-  //     // console.log(JSON.stringify(res.data));
-  //     return res.data;
-  //   });
-  // };
-
 
   var getNearbyRides = function(bearer) {
     return $http({

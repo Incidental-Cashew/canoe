@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-md-12">
                 <form class="form" ng-click="">
-                    <input class="form-control" g-places-autocomplete custom-places="myPlaces" ng-model="place" ng-click="" />
+                    <input class="form-control" g-places-autocomplete custom-places="myPlaces" ng-model="place" ng-change="getEndLocation(place.geometry.location)" ng-click="" />
                 </form>
 
                 <h5>Result:</h5>

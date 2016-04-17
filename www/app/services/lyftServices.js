@@ -18,7 +18,7 @@ angular.module('canoe.lyftServices', [])
         scope: 'public'
       }
     }).then(function(res) {
-      console.log('TOKEN: ', res.data.access_token);
+      // console.log('TOKEN: ', res.data.access_token);
       return res.data;
     });
   };  
@@ -53,7 +53,6 @@ angular.module('canoe.lyftServices', [])
     return $http({
       method: 'GET',
       url: 'https://api.lyft.com/v1/drivers',
-      method: 'GET',
       headers: {
         authorization: 'bearer ' + token
       },
@@ -66,24 +65,7 @@ angular.module('canoe.lyftServices', [])
     });
   };
 
-  // var getLyftEstimates = function(userData, token) {
-  //   return $http({
-  //     method: 'GET',
-  //     url: 'https://api.lyft.com/v1/cost',
-  //     headers: {
-  //       authorization: 'bearer ' + token
-  //     },
-  //     params: {
-  //       start_lat: 37.783708,
-  //       start_lng: -122.4177484,
-  //       end_lat: 37.711147,
-  //       end_lng: -122.4507667
-  //     }
-  //   }).then(function(response) {
-  //     return response.data;
-  //   });
-  // };
-  var getLyftEstimates = function(startData, token) {
+  var getLyftEstimates = function(startData, endpointData, token) {
     return $http({
       method: 'GET',
       url: 'https://api.lyft.com/v1/cost',
@@ -93,29 +75,14 @@ angular.module('canoe.lyftServices', [])
       params: {
         start_lat: startData.lat,
         start_lng: startData.lng,
-        end_lat: 37.711147,
-        end_lng: -122.4507667
+        end_lat: endpointData.lat,
+        end_lng: endpointData.lng
       }
     }).then(function(response) {
       return response.data;
     });
   };
 
-  // var getLyftEta = function(userData, token) {
-  //   return $http({
-  //     method: 'GET',
-  //     url: 'https://api.lyft.com/v1/eta',
-  //     headers: {
-  //       authorization: 'bearer ' + token
-  //     },
-  //     params: {
-  //       lat: 37.783708,
-  //       lng: -122.4177484
-  //     }
-  //   }).then(function(response) {
-  //     return response.data;
-  //   })
-  // };
   var getLyftEta = function(startData, token) {
     return $http({
       method: 'GET',
@@ -129,7 +96,7 @@ angular.module('canoe.lyftServices', [])
       }
     }).then(function(response) {
       return response.data;
-    })
+    });
   };
 
   return {
@@ -137,5 +104,5 @@ angular.module('canoe.lyftServices', [])
     getLyftEta: getLyftEta,
     getLyftEstimates: getLyftEstimates,
   };
-})
+});
 

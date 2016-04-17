@@ -8,10 +8,10 @@
        <div ng-controller="ModalCtrl">
          <ion-list style="position:absolute; z-index:3">
          <form class="form" ng-click="">
-             <input class="form-control" g-places-autocomplete custom-places="myPlaces" ng-model="place" ng-click="" />
+             <input class="form-control" g-places-autocomplete custom-places="myPlaces" ng-model="place" ng-change="getEndLocation(place.geometry.location)" ng-click="" />
          </form>
          <form class="form" ng-click="">
-             <input class="form-control" g-places-autocomplete custom-places="myPlaces" ng-model="place" ng-click="" />
+             <input class="form-control" g-places-autocomplete custom-places="myPlaces" ng-model="place" ng-change="getEndLocation(place.geometry.location)" ng-click="" />
          </form>
         </ion-list>
          <button class="button button-block button-light" style="position:absolute; padding-left:10px; margin-top:490px;z-index:2" ng-click="openModal(geodecoded)">
