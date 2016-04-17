@@ -31,8 +31,6 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
   //   };
   // })();
 
-  console.log('DASH CONTROLLER');
-
   $scope.lyftEstimates;
   $scope.uberEstimates;
   $scope.startPosition;
@@ -56,7 +54,6 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
     LyftAuth.getLyftToken().then(function(token) {
 
       LyftDetails.getLyftEstimates($scope.startPosition, $scope.endPosition, token.access_token).then(function(value) {
-        console.log(value);
         $scope.lyftEstimates = value.cost_estimates;
       });
 
