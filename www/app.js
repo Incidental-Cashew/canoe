@@ -66,7 +66,8 @@ angular.module('canoe', [
 
     .state('account', {
       url: '/account',
-      templateUrl: 'templates/tab-account.html'
+      templateUrl: 'templates/tab-account.html',
+      controller: 'LogoutCtrl'
     });
 
   // if none of the above states are matched, use this as the fallback
