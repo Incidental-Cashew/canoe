@@ -40,69 +40,72 @@ angular.module('canoe', [
   $stateProvider
 
   // setup an abstract state for the tabs directive
-    .state('tab', {
-    url: '/tab',
-    abstract: true,
-    templateUrl: 'templates/tabs.html'
-  })
+    // .state('tab', {
+    // url: '/tab',
+    // abstract: true,
+    // templateUrl: 'templates/tabs.html'
+    // })
 
-   .state('map', {
-     url: '/',
-     templateUrl: 'templates/tab-chats.html',
-     controller: 'ChatsCtrl'
-   })
-
-  // Each tab has its own nav history stack:
-
-  .state('login', {
-    url: '',
-    templateUrl: 'templates/login.html',
-    controller: 'LoginCtrl'
-  })
-
-  // Required to properly redirect after authorizing with UBER
-  .state('login2', {
-    url: '/login',
-    templateUrl: 'templates/login.html',
-    controller: 'LoginCtrl'
-  })
-
-  .state('tab.dash', {
-    url: '/dash',
-    views: {
-      'tab-dash': {
-        templateUrl: 'templates/tab-dash.html',
-        controller: 'DashCtrl'
-      }
-    }
-  })
-
-  .state('tab.chats', {
-      url: '/chats',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/tab-chats.html',
-          controller: 'ChatsCtrl'
-        }
-      }
-    })
-    .state('tab.chat-detail', {
-      url: '/chats/:chatId',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/chat-detail.html',
-          controller: 'ChatDetailCtrl'
-        }
-      }
+    .state('map', {
+       url: '/map',
+       templateUrl: 'templates/tab-chats.html',
+       controller: 'ChatsCtrl'
     })
 
-  .state('tab.account', {
+    // Each tab has its own nav history stack:
+
+    .state('login', {
+      url: '',
+      templateUrl: 'templates/login.html',
+      controller: 'LoginCtrl'
+    })
+
+    // Required to properly redirect after authorizing with UBER
+    .state('login2', {
+      url: '/login',
+      templateUrl: 'templates/login.html',
+      controller: 'LoginCtrl'
+    })
+
+    .state('dash', {
+      url: '/dash',
+      templateUrl: 'templates/tab-dash.html',
+      controller: 'DashCtrl'
+    })
+
+  // .state('tab.dash', {
+  //   url: '/dash',
+  //   views: {
+  //     'tab-dash': {
+  //       templateUrl: 'templates/tab-dash.html',
+  //       controller: 'DashCtrl'
+  //     }
+  //   }
+  // })
+
+    // .state('tab.chats', {
+    //   url: '/chats',
+    //   views: {
+    //     'tab-chats': {
+    //       templateUrl: 'templates/tab-chats.html',
+    //       controller: 'ChatsCtrl'
+    //     }
+    //   }
+    // })
+
+    // .state('tab.chat-detail', {
+    //   url: '/chats/:chatId',
+    //   views: {
+    //     'tab-chats': {
+    //       templateUrl: 'templates/chat-detail.html',
+    //       controller: 'ChatDetailCtrl'
+    //     }
+    //   }
+    // })
+
+  .state('account', {
     url: '/account',
-    views: {
-      'tab-account': {
-        templateUrl: 'templates/tab-account.html',
-      }
-    }
+    templateUrl: 'templates/tab-account.html'
   });
 
   // if none of the above states are matched, use this as the fallback

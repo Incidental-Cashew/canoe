@@ -44,6 +44,8 @@
     <!--
       The nav bar that will be updated as we navigate between views.
     -->
+    <!-- <ion-nav-view></ion-nav-view> -->
+
     <ion-side-menus enable-menu-with-back-views="false">
 
       <ion-side-menu-content>
@@ -70,30 +72,25 @@
 
           <ul class="list">
             <!-- RESULTS -->
-            <a href="#/tab/dash" class="item" menu-close>Results</a>
+            <a href="#/dash" class="item" menu-close>Results</a>
 
             <!-- MAP -->
-            <a href="#/tab/chats" class="item" menu-close>Map</a>
+            <a href="#/map" class="item" menu-close>Map</a>
 
             <!-- ACCOUNT -->
-            <a href="#/tab/account" class="item" menu-close>Settings</a>
+            <a href="#/account" class="item" menu-close>Settings</a>
           </ul>
-          
+
         </ion-content>
 
       </ion-side-menu>
     </ion-side-menus>
 
-<!--     <ion-nav-bar class="bar-stable">
-      <ion-nav-back-button>
-      </ion-nav-back-button>
-    </ion-nav-bar> -->
     <!--
       The views will be rendered in the <ion-nav-view> directive below
       Templates are in the /templates folder (but you could also
       have templates inline in this html file if you'd like).
     -->
-<!--     <ion-nav-view></ion-nav-view>
- -->  </body>
+  </body>
   <script src="lib/ngmap/build/scripts/ng-map.min.js"></script>
 </html>
