@@ -99,10 +99,36 @@ angular.module('canoe.lyftServices', [])
     });
   };
 
+  var requestLyft = function(startData, endpointData, product, bearer) {
+    return $http({
+      method: 'POST',
+      url: 'https://api.lyft.com/v1/rides',
+      headers: {
+        Authorization: 'Bearer ' + bearer,
+        'Content-Type': 'application/json'
+      },
+      data: {
+        'ride_type': product,
+        origin: {
+          lat: startData.lat,
+          lng: startData.lng
+        },
+        destination: {
+          lat: endpointData.lat,
+          lng: endpointData.lng
+        }
+      }
+    }).then(function(response) {
+      console.log(response.status + ' LYFT REQUESTED');
+      console.log(JSON.stringify(response));
+    });
+  };
+
   return {
     getLyftDriversNearBy: getLyftDriversNearBy,
     getLyftEta: getLyftEta,
     getLyftEstimates: getLyftEstimates,
+    requestLyft: requestLyft
   };
 });
 
