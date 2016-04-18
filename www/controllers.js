@@ -65,6 +65,7 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
       LyftDetails.getLyftEta($scope.startPosition, token.access_token).then(function(value) {
 
         $scope.selectedLyft.ride = $scope.lyftEstimates[$scope.lyftEstimates.length - 1];
+        // console.log(JSON.stringify($scope.selectedLyft.ride) + ' < -------- LYFT');
 
         // ADD ETA to Lyft Estimates
         $scope.lyftEstimates.forEach(function(ride, index) {
@@ -81,15 +82,28 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
 
       UberDetails.getUberTimeEstimates($scope.startPosition, $scope.endPosition).then(function(value) {
         $scope.selectedUber.ride = $scope.uberEstimates[0];
+        // console.log(JSON.stringify($scope.selectedUber.ride) + ' < ---- UBER ');
 
         $scope.uberEstimates.forEach(function(ride, index) {
           if (value.times[index]) {
             ride.eta_seconds = value.times[index].estimate;
           }
         });
+
       });
+
     });
   }
+
+  $scope.requestUber = function() {
+    UberDetails.requestUber($scope.startPosition, $scope.endPosition, $scope.selectedUber.ride.product_id, window.localStorage.uberBearer);
+  };
+
+  $scope.requestLyft = function() {
+    console.log($scope.selectedLyft.ride);
+    LyftDetails.requestLyft($scope.startPosition, $scope.endPosition, $scope.selectedLyft.ride.ride_type, window.localStorage.lyftBearer);
+  };
+  
 })
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {

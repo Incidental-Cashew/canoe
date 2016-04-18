@@ -31,6 +31,8 @@
       <div class="col">{{(selectedUber.ride.high_estimate | currency) || 'N/A'}}</div>
       <div class="col">{{selectedUber.ride.eta_seconds | secondsToMinutes}}</div>
     </div>
+    <button type="button" style="display:block; margin: auto; margin-top: 1em" ng-click="requestUber()">REQUEST UBER</button>
+
 
     <div class="row">
       <div class="col">{{selectedLyft.ride.display_name}}</div>
@@ -38,6 +40,7 @@
       <div class="col">{{selectedLyft.ride.estimated_cost_cents_max / 100 | currency}}</div>
       <div class="col">{{selectedLyft.ride.eta_seconds | secondsToMinutes}}</div>
     </div>
+    <button type="button" style="display:block; margin:auto; margin-top:1em" ng-click="requestLyft()">REQUEST LYFT</button>
 
   </ion-content>
 </ion-view>
