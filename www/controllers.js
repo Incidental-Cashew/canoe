@@ -234,6 +234,17 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
     };
   };
   checkAuthenticated();
+})
+.controller('LogoutCtrl', function($scope, $window, $state) {
+  var logout = function() {
+    delete $window.localStorage.uberBearer;
+    $scope.uberAuthenticated = false;
 
+    delete $window.localStorage.lyftBearer;
+    $scope.lyftAuthenticated = false;
 
+    $state.go('login');
+  };
+
+  $scope.destroyTokens = logout;
 });
