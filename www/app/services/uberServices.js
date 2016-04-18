@@ -73,6 +73,7 @@ angular.module('canoe.uberServices', [])
   };
 
   var requestUber = function(startData, endpointData, product, bearer) {
+    console.log(startData, endpointData, product, bearer);
     return $http({
       method: 'POST',
       url: 'https://sandbox-api.uber.com/v1/requests',

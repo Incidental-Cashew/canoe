@@ -99,6 +99,11 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
     UberDetails.requestUber($scope.startPosition, $scope.endPosition, $scope.selectedUber.ride.product_id, window.localStorage.uberBearer);
   };
 
+  $scope.requestLyft = function() {
+    console.log($scope.selectedLyft.ride);
+    LyftDetails.requestLyft($scope.startPosition, $scope.endPosition, $scope.selectedLyft.ride.ride_type, window.localStorage.lyftBearer);
+  };
+  
 })
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
