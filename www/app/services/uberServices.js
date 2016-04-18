@@ -41,7 +41,7 @@ angular.module('canoe.uberServices', [])
   var getNearbyRides = function(bearer) {
     return $http({
       method: 'POST',
-      url: 'https://api.uber.com/v1/requests/estimate', //SANDBOX: https://sandbox-api.uber.com//v1/sandbox/requests/
+      url: 'https://api.uber.com/v1/requests/estimate', //SANDBOX: https://sandbox-api.uber.com/v1/sandbox/requests/
       headers: {
         Authorization: 'Bearer ' + bearer,
         'Content-type': 'application/json'
@@ -53,7 +53,7 @@ angular.module('canoe.uberServices', [])
         end_longitude: -122.4507667 //userData.endLong
       }
     }).then(function(res) {
-      // console.log(JSON.stringify(res));
+      console.log(JSON.stringify(res));
       return res;
     });
   };
@@ -72,38 +72,38 @@ angular.module('canoe.uberServices', [])
     });
   };
 
+  var requestUber = function(startData, endpointData, product, bearer) {
+    return $http({
+      method: 'POST',
+      url: 'https://sandbox-api.uber.com/v1/requests',
+      headers: {
+        Authorization: 'Bearer ' + bearer,
+        'Content-Type': 'application/json'
+      },
+      data: {
+        product_id: product,
+        start_latitude: startData.lat, //userData.startLat
+        start_longitude: startData.lng, //userData.startLong
+        end_latitude: endpointData.lat, //userData.endLat
+        end_longitude: endpointData.lng //userData.endLong
+      }
+    }).then(function(res) {
+      // console.log(JSON.stringify(res.data));
+      console.log(res.status + ' UBER REQUESTED');
+    });
+  };
+
   return {
     getUberPriceEstimates: getUberPriceEstimates,
     getNearbyRides: getNearbyRides,
     getUberTimeEstimates: getUberTimeEstimates,
-    getUserHistory: getUserHistory
+    getUserHistory: getUserHistory,
+    requestUber: requestUber
   }
 
 })
 
 .factory('UberAuth', function($http, $location) {
-
-  // currently serves no function, was testing redirects, may be useful later
-  var authenticate = function() {
-    return $http({
-      method: 'GET',
-      url: 'https://login.uber.com/oauth/v2/authorize?client_id=mXeLa2XvUkhXEl8uTeqYTarmbP7aUmQy&response_type=code&redirect_uri=http://localhost:8000',
-    }).then(function(res) {
-      console.log(res);
-      // return res.data;
-    })
-  };
-
-  // currently serves no function, was testing redirects, may be useful later
-  var redirect = function() {
-    return $http({
-      method: 'GET',
-      url: '/uberAuth'
-    }).then(function(res) {
-      $location.path('/uberAuth');
-    })
-  };
-
 
   var getUberToken = function(authCode) {
     //client_secret: 'JUNTb5H7EVlifUuHkpP3XJpyZvCnfsUQvgaJllvG',
@@ -127,8 +127,6 @@ angular.module('canoe.uberServices', [])
   };
 
   return {
-    authenticate: authenticate,
-    redirect: redirect,
     getUberToken: getUberToken
   }
 });
