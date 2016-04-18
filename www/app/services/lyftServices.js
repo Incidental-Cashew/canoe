@@ -29,8 +29,8 @@ angular.module('canoe.lyftServices', [])
       method: 'POST',
       headers: {
         'content-type': 'application/json',
-        Authorization: 'Basic WFlhcmM4MDMwZ1lOOjloamM2SmxlNTYzaGdlU1JDQ1NPdW85OTNmeTdFWEZM'
-      },
+        Authorization: 'Basic ' + btoa('XYarc8030gYN:SANDBOX-9hjc6Jle563hgeSRCCSOuo993fy7EXFL')
+      }, // USE SANDBOX!!!!!!!!
       data: {
         grant_type: 'authorization_code',
         code: authCode
@@ -99,10 +99,36 @@ angular.module('canoe.lyftServices', [])
     });
   };
 
+  var requestLyft = function(startData, endpointData, product, bearer) {
+    return $http({
+      method: 'POST',
+      url: 'https://api.lyft.com/v1/rides',
+      headers: {
+        Authorization: 'Bearer ' + bearer,
+        'Content-Type': 'application/json'
+      },
+      data: {
+        'ride_type': product,
+        origin: {
+          lat: startData.lat,
+          lng: startData.lng
+        },
+        destination: {
+          lat: endpointData.lat,
+          lng: endpointData.lng
+        }
+      }
+    }).then(function(response) {
+      console.log(response.status + ' LYFT REQUESTED');
+      console.log(JSON.stringify(response));
+    });
+  };
+
   return {
     getLyftDriversNearBy: getLyftDriversNearBy,
     getLyftEta: getLyftEta,
     getLyftEstimates: getLyftEstimates,
+    requestLyft: requestLyft
   };
 });
 
