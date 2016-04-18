@@ -29,8 +29,8 @@ angular.module('canoe.lyftServices', [])
       method: 'POST',
       headers: {
         'content-type': 'application/json',
-        Authorization: 'Basic WFlhcmM4MDMwZ1lOOjloamM2SmxlNTYzaGdlU1JDQ1NPdW85OTNmeTdFWEZM'
-      },
+        Authorization: 'Basic ' + btoa('XYarc8030gYN:SANDBOX-9hjc6Jle563hgeSRCCSOuo993fy7EXFL')
+      }, // USE SANDBOX!!!!!!!!
       data: {
         grant_type: 'authorization_code',
         code: authCode
