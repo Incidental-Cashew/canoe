@@ -7,7 +7,7 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
   };
 }])
 
-.controller('ChatsCtrl', function($scope, NgMap, LocationDetails) {
+.controller('ChatsCtrl', function($scope, $state, NgMap, LocationDetails) {
 
   var geocoder = new google.maps.Geocoder;
   var options = {enableHighAccuracy: true};
@@ -19,17 +19,21 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
     });
   });
 
+  $scope.viewResults = function() {
+    $state.go('dash');
+  };
+
 })
 
 .controller('DashCtrl', function($scope, $window, $state, LyftAuth, LyftDetails, UberDetails, LocationDetails) {
 
   // USER AUTH COMMENTING OUT FOR TESTING
-  // (function checkAuthenticated() {
-  //   // check to see if $window.localStorage has both uberBearer and lyftBearer;
-  //   if (!$window.localStorage.uberBearer || !$window.localStorage.lyftBearer) {
-  //     $state.go('login');
-  //   };
-  // })();
+  (function checkAuthenticated() {
+    // check to see if $window.localStorage has both uberBearer and lyftBearer;
+    if (!$window.localStorage.uberBearer || !$window.localStorage.lyftBearer) {
+      $state.go('login');
+    };
+  })();
 
   $scope.lyftEstimates;
   $scope.uberEstimates;

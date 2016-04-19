@@ -4,17 +4,21 @@
  -->  <ion-content ng-controller="ChatsCtrl as vm">
     <ng-model="coords">
     <ng-map id="map" center="current-position" disableDefaultUI="true" geo-fallback-center="[40.74, -74.18]" zoom="17" style="height: 600px; padding:0px position:absolute; z-index:-1">
+
+      <button class="button button-block button-balanced" style="position: absolute; z-index:1;margin-top:0px" ng-click="viewResults()">VIEW RIDE OPTIONS</button>
+
+
        <marker idkey='1' position="current" animation="Animation.BOUNCE" centered="true" ></marker>
        <div ng-controller="ModalCtrl">
          <ion-list style="position:absolute; z-index:3">
          <form class="form" ng-click="">
-             <input class="form-control" g-places-autocomplete ng-model="place" ng-change="getStartLocation(place.geometry.location)" placeholder={{(geodecoded)}} ng-click="" />
+             <input class="form-control" g-places-autocomplete ng-model="place" ng-change="getStartLocation(place.geometry.location)" placeholder={{(geodecoded)}} ng-click="" style="margin-top:440px"/>
          </form>
          <form class="form" ng-click="">
              <input class="form-control"  g-places-autocomplete ng-model="toPlace" ng-change="getEndLocation(toPlace.geometry.location)" ng-click="" />
          </form>
         </ion-list>
-         <button class="button button-block button-light" style="position:absolute; padding-left:10px; margin-top:490px;z-index:2" ng-click="openModal(geodecoded)">
+         <button class="button button-block button-light" style="position:absolute; padding-left:10px; margin-top:495px;z-index:2" ng-click="openModal(geodecoded)">
            <p>{{geodecoded}}</p>
          </button>
        <button class="button button-block button-assertive" style="position:absolute; margin-top:550px;z-index:1" ng-click="openModal(geodecoded)">
