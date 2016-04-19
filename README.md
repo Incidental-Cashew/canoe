@@ -43,3 +43,5 @@ To start the server, from the root director run:
 ```bash
 $ ionic serve
 ```
+
+You will then be able to access it at localhost:8100
