@@ -38,13 +38,28 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
 
   $scope.selectedUber = {
     'background-color': 'black',
-    'color': 'white'
+    'color': 'white',
+    'border-style': 'solid',
+    'border-color': 'black',
+    'border-radius': '100px',
+    'font-weight': 'bold'
   };
 
   $scope.selectedLyft = {
     'background-color': '#ff00cc',
-    'color': 'white'
+    'color': 'white',
+    'border-style': 'solid',
+    'border-color': '#ff00cc',
+    'border-radius': '100px',
+    'font-weight': 'bold'
   };
+
+  $scope.row = {
+    // 'background-color': '#ff8700',
+    'background-color': 'white',
+    'color': 'black',
+    'border-radius': '10px'
+  }
 
   if (LocationDetails.startLocation && LocationDetails.endLocation) {
     $scope.startPosition = JSON.parse(LocationDetails.startLocation);
