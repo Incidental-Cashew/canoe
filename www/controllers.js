@@ -122,7 +122,7 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
     console.log($scope.selectedLyft.ride);
     LyftDetails.requestLyft($scope.startPosition, $scope.endPosition, $scope.selectedLyft.ride.ride_type, window.localStorage.lyftBearer);
   };
-  
+
 })
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
