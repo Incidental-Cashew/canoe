@@ -12,9 +12,10 @@ module.exports = function (config) {
     // list of files / patterns to load in the browser. order matters!
     files: [
       // angular source
-      'lib/ionic/js/ionic.bundle.js'
+      'www/lib/ionic/js/ionic.bundle.js',
 
       // our app code
+      'www/app.js',
       'www/controllers.js',
       'www/app/**/*.js',
 

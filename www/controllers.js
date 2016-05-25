@@ -7,7 +7,7 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
   };
 }])
 
-.controller('ChatsCtrl', function($scope, NgMap, LocationDetails) {
+.controller('ChatsCtrl', function($scope, $state, NgMap, LocationDetails) {
 
   var geocoder = new google.maps.Geocoder;
   var options = {enableHighAccuracy: true};
@@ -19,17 +19,21 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
     });
   });
 
+  $scope.viewResults = function() {
+    $state.go('dash');
+  };
 
+})
 
 .controller('DashCtrl', function($scope, $window, $state, LyftAuth, LyftDetails, UberDetails, LocationDetails) {
 
   // USER AUTH COMMENTING OUT FOR TESTING
-  // (function checkAuthenticated() {
-  //   // check to see if $window.localStorage has both uberBearer and lyftBearer;
-  //   if (!$window.localStorage.uberBearer || !$window.localStorage.lyftBearer) {
-  //     $state.go('login');
-  //   };
-  // })();
+  (function checkAuthenticated() {
+    // check to see if $window.localStorage has both uberBearer and lyftBearer;
+    if (!$window.localStorage.uberBearer || !$window.localStorage.lyftBearer) {
+      $state.go('login');
+    };
+  })();
 
   $scope.lyftEstimates;
   $scope.uberEstimates;
@@ -38,13 +42,28 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
 
   $scope.selectedUber = {
     'background-color': 'black',
-    'color': 'white'
+    'color': 'white',
+    'border-style': 'solid',
+    'border-color': 'black',
+    'border-radius': '100px',
+    'font-weight': 'bold'
   };
 
   $scope.selectedLyft = {
     'background-color': '#ff00cc',
-    'color': 'white'
+    'color': 'white',
+    'border-style': 'solid',
+    'border-color': '#ff00cc',
+    'border-radius': '100px',
+    'font-weight': 'bold'
   };
+
+  $scope.row = {
+    // 'background-color': '#ff8700',
+    'background-color': 'white',
+    'color': 'black',
+    'border-radius': '10px'
+  }
 
   if (LocationDetails.startLocation && LocationDetails.endLocation) {
     $scope.startPosition = JSON.parse(LocationDetails.startLocation);
@@ -103,7 +122,7 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
     console.log($scope.selectedLyft.ride);
     LyftDetails.requestLyft($scope.startPosition, $scope.endPosition, $scope.selectedLyft.ride.ride_type, window.localStorage.lyftBearer);
   };
-  
+
 })
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
@@ -230,10 +249,21 @@ angular.module('canoe.controllers', ['ngMap', 'google.places'])
   function checkAuthenticated() {
     // check to see if $window.localStorage has both uberBearer and lyftBearer;
     if ($window.localStorage.uberBearer && $window.localStorage.lyftBearer) {
-      $state.go('tab.chats');
+      $state.go('map');
     };
   };
   checkAuthenticated();
+})
+.controller('LogoutCtrl', function($scope, $window, $state) {
+  var logout = function() {
+    delete $window.localStorage.uberBearer;
+    $scope.uberAuthenticated = false;
 
+    delete $window.localStorage.lyftBearer;
+    $scope.lyftAuthenticated = false;
 
+    $state.go('login');
+  };
+
+  $scope.destroyTokens = logout;
 });

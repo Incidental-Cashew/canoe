@@ -1,46 +1,57 @@
-<ion-view cache-view="false" view-title="Dashboard" ng-controller='DashCtrl'>
+<ion-view cache-view="false" view-title="Dashboard" ng-controller='DashCtrl' style="background-color: orange; color: white; font-family: Geneva, Tahoma, Verdana, sans-serif">
   <ion-content class="padding">
-    <h2>Canoe</h2>
+    <!-- <h2>Canoe</h2> -->
+    <img src="../img/CANOE.png" style="display: block; margin: auto; margin-top: 1em; margin-bottom: 1em; width: 10em; height: 10em">
 
     <div class="list">
 
+      <div style="margin-bottom: 1em">
       <label ng-style='selectedUber' class="item item-input item-select">
-        <div ng-style='selectedUber' class="input-label">Uber Ride Type:</div>
+          <div ng-style='selectedUber' class="input-label">UBER RIDE TYPE:</div>
         <select ng-style='selectedUber' ng-model='selectedUber.ride' ng-options='est.localized_display_name for est in uberEstimates'>
         </select>
       </label>
+      </div>
 
       <label ng-style='selectedLyft' class="item item-input item-select">
-        <div ng-style='selectedLyft' class="input-label">Lyft Ride Type:</div>
+        <div ng-style='selectedLyft' class="input-label">LYFT RIDE TYPE:</div>
         <select ng-style='selectedLyft' ng-model='selectedLyft.ride' ng-init='selectedLyft.ride = selectedLyft.ride || lyftEstimates[0]' ng-options='est.display_name for est in lyftEstimates'>
         </select>
       </label>
 
     </div>
 
-    <div class="row">
-      <div class="col">Ride</div>
-      <div class="col">Cost Min</div>
-      <div class="col">Cost Max</div>
+    <div class="row" style="font-weight: bold; border-bottom: double; margin-bottom: 1em">
+      <div class="col">RIDE</div>
+      <div class="col">$MIN</div>
+      <div class="col">$MAX</div>
       <div class="col">ETA</div>
+      <div class="col">REQUEST</div>
     </div>
 
-    <div class="row">
+    <div style="margin-bottom: 1em">
+    <div class="row" ng-style="row">
       <div class="col">{{selectedUber.ride.localized_display_name}}</div>
       <div class="col">{{(selectedUber.ride.low_estimate | currency) || 'N/A'}}</div>
       <div class="col">{{(selectedUber.ride.high_estimate | currency) || 'N/A'}}</div>
       <div class="col">{{selectedUber.ride.eta_seconds | secondsToMinutes}}</div>
+       <div class="col">
+        <button type="button" class="button button-small button-balanced" ng-click="requestUber()">REQUEST UBER</button>
+       </div>
     </div>
-    <button type="button" style="display:block; margin: auto; margin-top: 1em" ng-click="requestUber()">REQUEST UBER</button>
+    </div>
 
 
-    <div class="row">
+
+    <div class="row" ng-style="row">
       <div class="col">{{selectedLyft.ride.display_name}}</div>
       <div class="col">{{selectedLyft.ride.estimated_cost_cents_min / 100 | currency}}</div>
       <div class="col">{{selectedLyft.ride.estimated_cost_cents_max / 100 | currency}}</div>
       <div class="col">{{selectedLyft.ride.eta_seconds | secondsToMinutes}}</div>
+      <div class="col">
+        <button type="button" class="button button-small button-balanced" ng-click="requestLyft()">REQUEST LYFT</button>
+      </div>
     </div>
-    <button type="button" style="display:block; margin:auto; margin-top:1em" ng-click="requestLyft()">REQUEST LYFT</button>
 
   </ion-content>
 </ion-view>

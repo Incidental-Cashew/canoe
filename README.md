@@ -1,3 +1,15 @@
+Canoe
+=====================
+Canoe is a mobile/web app for comparing ride sharing prices. To use the app, sign in to both ride of the provided riding sharing services to get past the login page. You will then be taken to the map page which automatically inds your location. There are input fields to change your start and end location. Once ready, you can click the "view ride options button" to compare prices.
+
+Features
+=====================
+Login buttons that will redirect you the the login page for the Ride sharing apps.
+Google Map for getting the current location.
+Input fields for changing the start and end location.
+Table view for ride comparisons.
+Hamburger menu for navigating the app and getting to logout button.
+
 Ionic App Base
 =====================
 
@@ -21,5 +33,23 @@ $ ionic start myProject tabs
 
 More info on this can be found on the Ionic [Getting Started](http://ionicframework.com/getting-started) page and the [Ionic CLI](https://github.com/driftyco/ionic-cli) repo.
 
-## Issues
-Issues have been disabled on this repo, if you do find an issue or have a question consider posting it on the [Ionic Forum](http://forum.ionicframework.com/).  Or else if there is truly an error, follow our guidelines for [submitting an issue](http://ionicframework.com/submit-issue/) to the main Ionic repository.
+You can also fork and clone this repo to your desktop, then from the root directory run 
+```bash
+$ npm install
+```
+to install the required dependencies.
+
+To start the server, from the root director run:
+```bash
+$ ionic serve
+```
+
+You will then be able to access it at localhost:8100
+
+Screenshots
+=====================
+![alt text](screenshots/login-page.png)
+![alt text](screenshots/allow-app-to-know-you-location.png)
+![alt text](screenshots/map-view.png)
+![alt text](screenshots/dashboard.png)
+![alt text](screenshots/hamburger-menu.png)
